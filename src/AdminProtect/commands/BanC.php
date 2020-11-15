@@ -6,6 +6,7 @@ use AdminProtect\Loader;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
 class BanC extends API{
+    private $cfg;
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "ban", "Ban specified player", "/ban <player> [reason...]", null, ["tban"]);
         $this->setPermission("admin.protect.ban.use");
