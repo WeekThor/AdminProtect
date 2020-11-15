@@ -1,4 +1,4 @@
-version: 0.0.7
+version: 0.0.8
 #IF YOU CHANGE THIS, THE CONFIG WILL REVERT TO ITS ORIGINAL VERSION
 
 
@@ -35,7 +35,7 @@ forUnban: "to unban"               # "[AdminProtect] Specify IP adress to unban"
 
 # ADDITIONAL MESSAGES
 # Plusin 'BanInfo' by TSt is required for these message to work
-# Minimal plugin 'BanInfo' version: 1.2.4
+# Minimal plugin 'BanInfo' version: 1.13.0
 
 PlayerNotBanned: "That player is not banned."
 IPNotBanned: "That IP is not banned."

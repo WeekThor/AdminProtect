@@ -7,6 +7,7 @@ use AdminProtect\commands\UnbanC;
 use AdminProtect\commands\KickC;
 use AdminProtect\commands\UnbanIPC;
 
+use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
@@ -21,15 +22,8 @@ class Loader extends PluginBase{
 		$this->getServer()->getLogger()->info("§2[AdminProtect]§a Enabled!");
 		$banInfoPlugin = $this->getServer()->getPluginManager()->getPlugin("BanInfo");
 		if($banInfoPlugin != null){
-		    if(intval(str_replace('.', '', $banInfoPlugin->getDescription()->getVersion())) >= 124){
-		        $this->getServer()->getLogger()->info("§2[AdminProtect]§a Detected BanInfo plugin. Version: {$banInfoPlugin->getDescription()->getVersion()}.");
-		        $this->hasBanInfoPlugin = true;
-		    }else{
-		        $this->getServer()->getLogger()->info("§6[AdminProtect]§e A plugin BanInfo was found, but the version is not suitable. Plugin version: {$banInfoPlugin->getDescription()->getVersion()}!");
-		        $this->getServer()->getLogger()->info("§6[AdminProtect]§e Required version: 1.2.4+");
-		    }
-	
-	    }
+		    $this->hasBanInfoPlugin = $this->checkCompatibility($banInfoPlugin);
+		}
 	}
 	public function checkConfig(){
         if(!is_dir($this->getDataFolder())){
@@ -40,7 +34,7 @@ class Loader extends PluginBase{
         }
         $this->saveResource("config.yml");
 		$cfg = $this->getConfig();
-		if(!$cfg->exists("version") || $cfg->get("version") !== "0.0.7"){
+		if(!$cfg->exists("version") || $cfg->get("version") !== "0.0.8"){
             $this->getLogger()->error("Detected old or broken config.yml version!");
             $this->getLogger()->error("Old configuration file saved as config.old.yml");
             $this->getLogger()->notice("Saving default configurtion file...");
@@ -92,5 +86,27 @@ class Loader extends PluginBase{
 	    $ipv4 = "[0-9]{1,3}(\.[0-9]{1,3}){3}";
 	    $ipv6 = "[0-9a-fA-F]{1,4}(\:[0-9a-fA-F]{1,4}){7}";
 	    return preg_match("/^($ipv4|$ipv6)\$/", trim($ip));
+	}
+    
+	private function checkCompatibility(Plugin $plugin) : bool{
+	    $version = explode('.', $plugin->getDescription()->getVersion());
+	    $min_version = [1,13,0];
+	    $return = false;
+	    if(intval($version[0]) >= $min_version[0]){
+	        if(intval($version[1]) >= $min_version[1]){
+	            if(intval($version[2]) >= $min_version[2]){
+	                $return = true;
+	            }
+	        }
+	    }
+	    if($return){
+	        $this->getServer()->getLogger()->info("§2[AdminProtect]§a Plugin BanInfo v".implode('.', $version)." detected!");
+	        $this->getServer()->getLogger()->info("§2[AdminProtect]§a Enebled additional functionality: check if player banned before unban");
+	    }else{
+	        $this->getServer()->getLogger()->info("§6[AdminProtect]§e An incompatible plugin BanInfo version was found: ".implode('.', $version)."!");
+	        $this->getServer()->getLogger()->info("§6[AdminProtect]§e Required version: ". implode('.', $min_version) . " or higher");
+	        $this->getServer()->getLogger()->info("§2[AdminProtect]§a Additional functionality was not enabled.");
+	    }
+	    return $return;
 	}
 }
