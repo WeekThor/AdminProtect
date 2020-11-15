@@ -1,0 +1,51 @@
+﻿name: AdminProtect
+main: AdminProtect\Loader
+api: 3.0.1
+version: 1.2.4
+authors: [TableStudio Team (TSt), "WeekThor"]
+description: "Защита от бана и кика для Администрации"
+softdepend: [BanInfo]
+permissions:
+  admin.protect.*:
+    description: "All plugin permissions"
+    default: op
+    children:
+      admin.protect.ban:
+        description: "Protection from /ban"
+        default: op
+      admin.protect.ban.use:
+        description: "Access to use /ban"
+        default: op
+      admin.protect.ban.use.offline:
+        description: "Access to ban offline players"
+        default: op
+      admin.protect.ban.use.protected:
+        description: "Access to ban players with protection"
+        default: op
+      admin.protect.kick:
+        description: "Protection from /kick"
+        default: op
+      admin.protect.kick.use:
+        description: "Access to use /kick"
+        default: op
+      admin.protect.kick.use.protected:
+        description: "Access to kick players with protection"
+        default: op
+      admin.protect.unban.use:
+        description: "Access to use /unban"
+        default: op
+      admin.protect.unbanip.use:
+        description: "Access to use /unbanip"
+        default: op
+      admin.protect.banip:
+        description: "Protection from IP ban (if player online)"
+        default: op
+      admin.protect.banip.use:
+        description: "Access to use /banip"
+        default: op
+      admin.protect.banip.use.offline:
+        description: "Access to ban offline players"
+        default: op
+      admin.protect.banip.use.protected:
+        description: "Access to ban players with protection"
+        default: op

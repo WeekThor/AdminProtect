@@ -1,0 +1,50 @@
+version: 0.0.7
+#IF YOU CHANGE THIS, THE CONFIG WILL REVERT TO ITS ORIGINAL VERSION
+
+
+#######################
+#                     #
+#  MESSAGES SETTINGS  #
+#                     #
+#######################
+
+# MESSAGES PLACEHOLDERS:
+# %player% - Player who was kicked/banned.
+# %sender% - Player who kicked/bloked (or: command sender).
+# %reason% - Reason.
+
+DefaultBanReason: "You got the great seal"                                                      # Default ban reason (if not specified)
+BanBroadcast: "§6Player §c%sender%§6 banned player §c%player%§6. Reason: §c%reason%§6."         # Boadcast message about ban (all players can see)
+BannedPlayerKickMessage: "You were be banned on this server. Reason: %reason% (%sender%§r)"     # Boadcast message about ban (all players can see)
+DefaultKickReason: "You were kicked for breaking the rules"                                     # Default kick reason (if not specified)
+KickBroadcast: "§6Player §c%sender%§6 kicked player §c%player%§6. Reason: §c%reason%§6."        # Boadcast message about kick (all players can see)
+KickedPlayerKickMessage: "You were kicked from the server. Reason: %reason% (%sender%§r)"       # Message on kicked player screen
+BanIPBroadcast: "§6Player §c%sender%§6 banned IP adress §c%player%§6. Reason: §c%reason%§6."    # Boadcast message about ip ban (all players can see)
+BannedIPKickMessage: "Your IP was blocked on this server. Reason: %reason% (%sender%§r)"        # Message on banned player screen
+UnbanBroadcast: "§6Player §c%sender%§6 unbanned §c%player%§6."                                  # Boadcast message about unban (all players can see)
+Console: "CONSOLE"   # Admin name (%sender%) when kick/ban from console
+CantBanPlayer: "You can't ban this player!"
+CantKickPlayer: "You can't kick this player!"
+CantBanOffline: "You can't ban player that in offline"     
+PlayerNotFound: "Player not found or offline"    
+IncorrectIP: "Specify IP adress"   # Message..:
+forBan: "to ban"                   # "[AdminProtect] Specify IP adress to ban"
+forUnban: "to unban"               # "[AdminProtect] Specify IP adress to unban"
+
+
+
+# ADDITIONAL MESSAGES
+# Plusin 'BanInfo' by TSt is required for these message to work
+# Minimal plugin 'BanInfo' version: 1.2.4
+
+PlayerNotBanned: "That player is not banned."
+IPNotBanned: "That IP is not banned."
+
+
+
+# OTHER MESSAGES 
+
+Usage: "Usage"    
+Player: "player"           # <player> in usage description
+IP: "IP"                   # <IP> in usage description
+Reason: "reason"           # [reason...] in usage description
