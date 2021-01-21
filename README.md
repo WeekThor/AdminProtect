@@ -2,11 +2,11 @@
 Plugin prevents banning and kicking of players with special rights
 
 ## Commands
-- /kick <player> [reason...] – kick player
-- /ban <player> [reason...] – ban player
-- /banip <player or IP adress> [reason...] – ban specified IP adress or specified player's IP adress
-- /unban <player>; /pardon <player> – unban player
-- /unbanip <IP>; /pardon-ip <IP> – unban IP adress
+- /kick &lt;player&gt; [reason...] – kick player
+- /ban &lt;player&gt; [reason...] – ban player
+- /banip &lt;player or IP adress&gt; [reason...] – ban specified IP adress or specified player's IP adress
+- /unban &lt;player&gt; /pardon &lt;player&gt; – unban player
+- /unbanip &lt;IP&gt; /pardon-ip &lt;IP&gt; – unban IP adress
   
 ## Permissions
 - admin.protect.* – all plugin permissions
