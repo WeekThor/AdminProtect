@@ -1,5 +1,5 @@
 # AdminProtect
-Plugin prevents banning and kicking of players with special rights
+AdminProtect is PocketMine-MP plugin that protects the administrator (or players with permissions) from being banned and kicked and prevent offline player ban.
 
 ## Commands
 - /kick &lt;player&gt; [reason...] – kick player
