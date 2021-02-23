@@ -12,7 +12,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
 class Loader extends PluginBase{
-    public $hasBanInfoPlugin = false;
+    public $banInfoAPI = null;
     public function onLoad(){
         $this->checkConfig();
 		$this->registerCommands();
@@ -87,24 +87,36 @@ class Loader extends PluginBase{
 	}
     
 	private function checkCompatibility(Plugin $plugin) : bool{
-	    $version = explode('.', $plugin->getDescription()->getVersion());
-	    $min_version = [1,13,0];
-	    $return = false;
-	    if(intval($version[0]) >= $min_version[0]){
-	        if(intval($version[1]) >= $min_version[1]){
-	            if(intval($version[2]) >= $min_version[2]){
-	                $return = true;
+	    $version = explode(' ', $plugin->getDescription()->getVersion());
+	    $version = explode('-', $version[0]);
+	    $version = explode('.', $version[0]);
+	    $min_version = [1,14,1];
+	    $api_version = '1.0.0';
+	    if((intval($version[0]) == $min_version[0] AND ((intval($version[1]) == $min_version[1] AND intval($version[2]) >= $min_version[2]) OR intval($version[1]) > $min_version[1])) OR intval($version[0]) >= $min_version[0]){
+	        if($plugin->getDescription()->getAuthors()[0] == 'WeekThor'){
+	            $this->getServer()->getLogger()->notice("[AdminProtect] Plugin BanInfo v".implode('.', $version)." detected!");
+	            try{
+	                $this->banInfoAPI = $plugin->getAPI($api_version);
+	                if($this->banInfoAPI != null){
+	                    $this->getServer()->getLogger()->notice("[AdminProtect] Enabled additional functionality.");
+	                    return true;
+	                }else{
+	                    $this->getServer()->getLogger()->notice("[AdminProtect] BanInfo connection failed. Is AdminProtect outdated?");
+	                    return false;
+	                }
+	            }catch (\Exception $e){
+	                $this->getServer()->getLogger()->notice("[AdminProtect] BanInfo connection failed. Do you have an official BanInfo version?");
+	                return false;
 	            }
+	        }else{
+	            return false;
 	        }
-	    }
-	    if($return){
-	        $this->getServer()->getLogger()->notice("[AdminProtect] Plugin BanInfo v".implode('.', $version)." detected!");
-	        $this->getServer()->getLogger()->notice("[AdminProtect] Enebled additional functionality: check if player banned before unban");
 	    }else{
 	        $this->getServer()->getLogger()->notice("[AdminProtect] An incompatible plugin BanInfo version was found: ".implode('.', $version)."!");
 	        $this->getServer()->getLogger()->notice("[AdminProtect] Required version: ". implode('.', $min_version) . " or higher");
 	        $this->getServer()->getLogger()->notice("[AdminProtect] Additional functionality was not enabled.");
+	        return false;
 	    }
-	    return $return;
+	    
 	}
 }

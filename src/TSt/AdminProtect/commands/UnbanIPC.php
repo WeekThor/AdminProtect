@@ -26,10 +26,9 @@ class UnbanIPC extends API{
                 $admin = $this->cfg->get("Console");
             }
             $name = array_shift($args);
-            $banInfoPlugin = $this->getPlugin()->getServer()->getPluginManager()->getPlugin("BanInfo");
             $allow_unban = true;
-            if($this->getPlugin()->hasBanInfoPlugin){
-                $banInfo = $banInfoPlugin->getBanInfo('banned-ips.txt');
+            if($this->getPlugin()->banInfoAPI != null){
+                $banInfo = $this->getPlugin()->banInfoAPI->getBanInfo(true);
                 if($banInfo->get($name) == null){
                     $allow_unban = false;
                 }

@@ -25,11 +25,10 @@ class UnbanC extends API{
             }else{
                 $admin = $this->cfg->get("Console");
             }
-            $banInfoPlugin = $this->getPlugin()->getServer()->getPluginManager()->getPlugin("BanInfo");
             $name = array_shift($args);
             $allow_unban = true;
-            if($this->getPlugin()->hasBanInfoPlugin){
-                $banInfo = $banInfoPlugin->getBanInfo('banned-players.txt');
+            if($this->getPlugin()->banInfoAPI != null){
+                $banInfo = $this->getPlugin()->banInfoAPI->getBanInfo(false);
                 if($banInfo->get($name) == null){
                     $allow_unban = false;
                 }

@@ -1,9 +1,9 @@
 ﻿name: AdminProtect
 main: TSt\AdminProtect\Loader
 api: 3.0.1
-version: 1.2.4
-authors: [TableStudio Team (TSt), "WeekThor"]
-description: "Защита от бана и кика для Администрации"
+version: 1.3.0-beta-1
+authors: ["WeekThor"]
+description: "Protect the administrator or player with permissions from being banned and kicked and prevent offline ban"
 softdepend: [BanInfo]
 permissions:
   admin.protect.*:

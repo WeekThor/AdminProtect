@@ -46,7 +46,7 @@ class BanC extends API{
                     if($sender instanceof Player and !$sender->hasPermission("admin.protect.kick.ban.protected")){
                         $sender->sendMessage("§4[AdminProtect]§c {$this->cfg->get("CantBanPlayer")}");
                     }else{
-                        $sender->getServer()->getNameBans()->addBan($p, $reason, null, $adminName);
+                        $sender->getServer()->getNameBans()->addBan($name, $reason, null, $adminName);
                         $kick_message = str_replace("%sender%", $admin, $this->cfg->get('BannedPlayerKickMessage'));
                         $kick_message = str_replace("%reason%", $reason, $kick_message);
                         $p->kick($kick_message);
@@ -75,6 +75,10 @@ class BanC extends API{
                     $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("CantBanOffline")}");
                 }
                 
+            }
+            if($this->getPlugin()->banInfoAPI != null){
+                $api = $this->getPlugin()->banInfoAPI;
+                $api->updateHistory($name);
             }
             
         }
