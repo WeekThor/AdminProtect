@@ -31,10 +31,13 @@ AdminProtect is PocketMine-MP plugin that protects the administrator (or players
   
 ## Temporary ban
 Command: /tempban &lt;player&gt; &lt;date or duration&gt; [reason...]
+
 Aliases: /tban
+
 Arguments: 
 - &lt;player&gt; – player nickname
 - &lt;date or duration&gt; – ban end date (01.01.2026) or ban duration (1h30m, 5mo, etc)
+- [reason...] – ban reason
 
 Ban duration examples:
 - 1h – 1 hour
