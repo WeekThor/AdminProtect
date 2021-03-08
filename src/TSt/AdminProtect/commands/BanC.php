@@ -8,7 +8,7 @@ use pocketmine\Player;
 class BanC extends API{
     private $cfg;
     public function __construct(Loader $plugin){
-        parent::__construct($plugin, "ban", "Ban specified player", "/ban <player> [reason...]", null, ["tban"]);
+        parent::__construct($plugin, "ban", "Ban specified player", "/ban <player> [reason...]", null, []);
         $this->setPermission("admin.protect.ban.use");
     }
     public function execute(CommandSender $sender, $alias, array $args): bool{
@@ -43,7 +43,7 @@ class BanC extends API{
         
             if($p instanceof Player){
                 if($p->hasPermission("admin.protect.ban" )){
-                    if($sender instanceof Player and !$sender->hasPermission("admin.protect.kick.ban.protected")){
+                    if($sender instanceof Player and !$sender->hasPermission("admin.protect.ban.protected")){
                         $sender->sendMessage("§4[AdminProtect]§c {$this->cfg->get("CantBanPlayer")}");
                     }else{
                         $sender->getServer()->getNameBans()->addBan($name, $reason, null, $adminName);
