@@ -26,7 +26,7 @@ AdminProtect is PocketMine-MP plugin that protects the administrator (or players
   - admin.protect.banip – Protection from /banip
   - admin.protect.banip.use – Allow to use /banip (only ban online players' IP)
   - admin.protect.banip.use.offline – Allow to ban offline players' IP
-  - admin.protect.banip.use.protection – Allow to IP-ban players with protection
+  - admin.protect.banip.use.protected – Allow to IP-ban players with protection
   - admin.protect.unbanip.use – Allow to /unbanip
   
 ## Temporary ban
