@@ -1,63 +1,62 @@
-name: AdminProtect
+﻿name: AdminProtect
 main: TSt\AdminProtect\Loader
-api: 3.0.1
-version: 1.3.0-beta-2
+api: 4.0.0
+version: 2.0.0-beta-1
 authors: ["WeekThor"]
 description: "Protect the administrator or player with permissions from being banned and kicked and prevent offline ban"
 softdepend: [BanInfo]
 permissions:
-  admin.protect.*:
-    description: "All plugin permissions"
+  adminprotect.ban.protect:
+    description: "Protection from /ban"
     default: op
-    children:
-      admin.protect.ban:
-        description: "Protection from /ban"
-        default: op
-      admin.protect.ban.use:
-        description: "Access to use /ban"
-        default: op
-      admin.protect.ban.use.offline:
-        description: "Access to ban offline players"
-        default: op
-      admin.protect.ban.use.protected:
-        description: "Access to ban players with protection"
-        default: op
-      admin.protect.tempban:
-        description: "Protection from /tempban"
-        default: op
-      admin.protect.tempban.use:
-        description: "Access to use /tempban command"
-        default: op
-      admin.protect.tempban.use.offline:
-        description: "Access to temporary ban offline players"
-        default: op
-      admin.protect.tempban.use.protected:
-        description: "Access to temporary ban players with protection"
-        default: op
-      admin.protect.kick:
-        description: "Protection from /kick"
-        default: op
-      admin.protect.kick.use:
-        description: "Access to use /kick"
-        default: op
-      admin.protect.kick.use.protected:
-        description: "Access to kick players with protection"
-        default: op
-      admin.protect.unban.use:
-        description: "Access to use /unban"
-        default: op
-      admin.protect.unbanip.use:
-        description: "Access to use /unbanip"
-        default: op
-      admin.protect.banip:
-        description: "Protection from IP ban (if player online)"
-        default: op
-      admin.protect.banip.use:
-        description: "Access to use /banip"
-        default: op
-      admin.protect.banip.use.offline:
-        description: "Access to ban offline players"
-        default: op
-      admin.protect.banip.use.protected:
-        description: "Access to ban players with protection"
-        default: op
+  adminprotect.ban.use:
+    description: "Access to use /ban"
+    default: op
+  adminprotect.ban.use.offline:
+    description: "Access to ban offline players"
+    default: op
+  adminprotect.ban.use.protected:
+    description: "Access to ban players with protection"
+    default: op
+  adminprotect.tempban.protect:
+    description: "Protection from /tempban"
+    default: op
+  adminprotect.tempban.use:
+    description: "Access to use /tempban command"
+    default: op
+  adminprotect.tempban.use.offline:
+    description: "Access to temporary ban offline players"
+    default: op
+  adminprotect.tempban.use.protected:
+    description: "Access to temporary ban players with protection"
+    default: op
+  adminprotect.kick.protect:
+    description: "Protection from /kick"
+    default: op
+  adminprotect.kick.use:
+    description: "Access to use /kick"
+    default: op
+  adminprotect.kick.use.protected:
+    description: "Access to kick players with protection"
+    default: op
+  adminprotect.unban.use:
+    description: "Access to use /unban"
+    default: op
+  adminprotect.unbanip.use:
+    description: "Access to use /unbanip"
+    default: op
+  adminprotect.banip.protect:
+    description: "Protection from IP ban (if player online)"
+    default: op
+  adminprotect.banip.use:
+    description: "Access to use /tempbanip"
+    default: op
+  adminprotect.banip.use.offline:
+    description: "Access to ban offline players"
+    default: op
+  adminprotect.banip.use.protected:
+    description: "Access to ban players with protection"
+    default: op
+  adminprotect.banip.use.permanent:
+    description: "Access to use /banip for permanently ban IP"
+    default: op

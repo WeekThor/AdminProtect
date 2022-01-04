@@ -1,15 +1,15 @@
 <?php
 namespace TSt\AdminProtect\commands;
 
-use TSt\AdminProtect\APIs\API;
+use TSt\AdminProtect\APIs\APCommand;
 use TSt\AdminProtect\Loader;
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
-class UnbanC extends API{
+use pocketmine\player\Player;
+class UnbanC extends APCommand{
     private $cfg;
     public function __construct(Loader $plugin){
-        parent::__construct($plugin, "unban", "Unban nickname", "/unban <player>", null, ["tunban", "pardon"]);
-        $this->setPermission("admin.protect.unban.use");
+        parent::__construct($plugin, "pardon", "Unban nickname", "/pardon <player>", null, ["unban"]);
+        $this->setPermission("adminprotect.unban.use");
     }
     public function execute(CommandSender $sender, $alias, array $args): bool{
         if(!$this->testPermission($sender)){

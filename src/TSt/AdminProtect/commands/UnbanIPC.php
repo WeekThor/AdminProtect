@@ -1,15 +1,15 @@
 <?php
 namespace TSt\AdminProtect\commands;
 
-use TSt\AdminProtect\APIs\API;
+use TSt\AdminProtect\APIs\APCommand;
 use TSt\AdminProtect\Loader;
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
-class UnbanIPC extends API{
+use pocketmine\player\Player;
+class UnbanIPC extends APCommand{
     private $cfg;
     public function __construct(Loader $plugin){
-        parent::__construct($plugin, "unbanip", "Unban IP", "/unbanip <player>", null, ["tunbanip", "pardon-ip", "unban-ip"]);
-        $this->setPermission("admin.protect.unbanip.use");
+        parent::__construct($plugin, "pardon-ip", "Unban IP", "/pardon-ip <player>", null, ["unbanip", "pardonip", "unban-ip"]);
+        $this->setPermission("adminprotect.unbanip.use");
     }
     public function execute(CommandSender $sender, $alias, array $args): bool{
         if(!$this->testPermission($sender)){
@@ -39,6 +39,7 @@ class UnbanIPC extends API{
                     $broadcast = str_replace("%sender%", $admin, $broadcast);
                     $broadcast = str_replace("%player%", $name, $broadcast);
                     $sender->getServer()->getIPBans()->remove($name);
+                    $sender->getServer()->getNetwork()->unblockAddress($name);
                     $sender->getServer()->broadcastMessage($broadcast);
                 }else{
                     $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("IncorrectIP")} {$this->cfg->get("forUnban")}");

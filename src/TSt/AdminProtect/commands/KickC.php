@@ -1,15 +1,15 @@
 <?php
 namespace TSt\AdminProtect\commands;
 
-use TSt\AdminProtect\APIs\API;
+use TSt\AdminProtect\APIs\APCommand;
 use TSt\AdminProtect\Loader;
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
-class KickC extends API{
+use pocketmine\player\Player;
+class KickC extends APCommand{
     private $cfg;
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "kick", "Kick specified player", "/kick <player> [reason...]", null, ["tkick"]);
-        $this->setPermission("admin.protect.kick.use");
+        $this->setPermission("adminprotect.kick.use");
     }
     
     public function execute(CommandSender $sender, $alias, array $args): bool{
@@ -21,17 +21,9 @@ class KickC extends API{
           $sender->sendMessage("§4[AdminProtect]§c /kick <{$this->cfg->get("Player")}> [{$this->cfg->get("Reason")}...]");
         }else{
             
-            $defaultreason = $this->cfg->get('DefaultKickReason');
             $name = array_shift($args);
             $r = trim(implode(" ", $args));
-            if($r == null){
-                $reason = $defaultreason;
-            }else{
-                $reason = $r;
-            }
-            $p = $sender->getServer()->getPlayer($name);
-        
-        
+            $reason = ($r === null) ? $this->cfg->get('DefaultKickReason') : $r;
         
             if($sender instanceof Player){
                 $admin = $sender->getNameTag();
@@ -41,9 +33,9 @@ class KickC extends API{
             $kick_message = str_replace("%sender%", $admin, $this->cfg->get('KickedPlayerKickMessage'));
             $kick_message = str_replace("%reason%", $reason, $kick_message);
         
-            if($p instanceof Player){
-                if($p->hasPermission("admin.protect.kick" )){
-                    if($sender instanceof Player and !$sender->hasPermission("admin.protect.kick.use.protected")){
+            if(($p = $sender->getServer()->getPlayerByPrefix($name)) instanceof Player){
+                if($p->hasPermission("adminprotect.kick.protect" )){
+                    if($sender instanceof Player and !$sender->hasPermission("adminprotect.kick.use.protected")){
                         $sender->sendMessage("§4[AdminProtect]§c {$this->cfg->get("CantKickPlayer")}");
                     }else{
                         $p->kick($kick_message);
@@ -55,9 +47,9 @@ class KickC extends API{
                     return false;
                 }else{
                     $p->kick($kick_message);
-                    $broad = str_replace("%sender%", $admin, $this->cfg->get('KickBroadcast'));
-                    $broadc = str_replace("%player%", $p->getNameTag(), $broad);
-                    $broadcast = str_replace("%reason%", $reason, $broadc);
+                    $broadcast = str_replace("%sender%", $admin, $this->cfg->get('KickBroadcast'));
+                    $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);
+                    $broadcast = str_replace("%reason%", $reason, $broadcast);
                     $sender->getServer()->broadcastMessage($broadcast);
                     return false;
                 } 

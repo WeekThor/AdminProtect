@@ -1,15 +1,15 @@
 <?php
 namespace TSt\AdminProtect\commands;
 
-use TSt\AdminProtect\APIs\API;
+use TSt\AdminProtect\APIs\APCommand;
 use TSt\AdminProtect\Loader;
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
-class BanC extends API{
+use pocketmine\player\Player;
+class BanC extends APCommand{
     private $cfg;
     public function __construct(Loader $plugin){
         parent::__construct($plugin, "ban", "Ban specified player", "/ban <player> [reason...]", null, []);
-        $this->setPermission("admin.protect.ban.use");
+        $this->setPermission("adminprotect.ban.use");
     }
     public function execute(CommandSender $sender, $alias, array $args): bool{
         if(!$this->testPermission($sender)){
@@ -28,48 +28,46 @@ class BanC extends API{
             }else{
                 $reason = $r;
             }
-            $p = $sender->getServer()->getPlayer($name);
+            $p = $sender->getServer()->getPlayerExact($name);
             
             
             if($sender instanceof Player){
-                $admin = $sender->getNameTag();
-                $adminName = $sender->getName();
+                $adminName = $sender->getNameTag();
             }else{
-                $admin = $admin = $this->cfg->get("Console");;
-                $adminName = $admin = $this->cfg->get("Console");;
+                $adminName = $this->cfg->get("Console");;
             }
-            $kick_message = str_replace("%sender%", $admin, $this->cfg->get('BannedPlayerKickMessage'));
+            $kick_message = str_replace("%sender%", $adminName, $this->cfg->get('BannedPlayerKickMessage'));
             $kick_message = str_replace("%reason%", $reason, $kick_message);
         
             if($p instanceof Player){
-                if($p->hasPermission("admin.protect.ban" )){
-                    if($sender instanceof Player and !$sender->hasPermission("admin.protect.ban.protected")){
+                if($p->hasPermission("adminprotect.ban.protect" )){
+                    if($sender instanceof Player and !$sender->hasPermission("adminprotect.ban.protected")){
                         $sender->sendMessage("§4[AdminProtect]§c {$this->cfg->get("CantBanPlayer")}");
                     }else{
                         $sender->getServer()->getNameBans()->addBan($name, $reason, null, $adminName);
-                        $kick_message = str_replace("%sender%", $admin, $this->cfg->get('BannedPlayerKickMessage'));
+                        $kick_message = str_replace("%sender%", $adminName, $this->cfg->get('BannedPlayerKickMessage'));
                         $kick_message = str_replace("%reason%", $reason, $kick_message);
                         $p->kick($kick_message);
-                        $broad = str_replace("%sender%", $admin, $this->cfg->get('BanBroadcast'));
-                        $broadc = str_replace("%player%", $p->getNameTag(), $broad);
-                        $broadcast = str_replace("%reason%", $reason, $broadc);
+                        $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('BanBroadcast'));
+                        $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);
+                        $broadcast = str_replace("%reason%", $reason, $broadcast);
                         $sender->getServer()->broadcastMessage($broadcast);
                     }
                 }else{
                     $sender->getServer()->getNameBans()->addBan($name, $reason, null, $adminName);
                     $p->kick($kick_message);
-                    $broad = str_replace("%sender%", $admin, $this->cfg->get('BanBroadcast'));
-                    $broadc = str_replace("%player%", $p->getNameTag(), $broad);
-                    $broadcast = str_replace("%reason%", $reason, $broadc);
+                    $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('BanBroadcast'));
+                    $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);
+                    $broadcast = str_replace("%reason%", $reason, $broadcast);
                     $sender->getServer()->broadcastMessage($broadcast);
                 }
             
             }else{
-                if(!($sender instanceof Player) or $sender->hasPermission("admin.protect.ban.use.offline")){
+                if(!($sender instanceof Player) or $sender->hasPermission("adminprotect.ban.use.offline")){
                     $sender->getServer()->getNameBans()->addBan($name, $reason, null, $adminName);
-                    $broad = str_replace("%sender%", $admin, $this->cfg->get('BanBroadcast'));
-                    $broadc = str_replace("%player%", $name, $broad);
-                    $broadcast = str_replace("%reason%", $reason, $broadc);
+                    $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('BanBroadcast'));
+                    $broadcast = str_replace("%player%", $name, $broadcast);
+                    $broadcast = str_replace("%reason%", $reason, $broadcast);
                     $sender->getServer()->broadcastMessage($broadcast);
                 }else{
                     $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("CantBanOffline")}");

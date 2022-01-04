@@ -1,16 +1,17 @@
 <?php
 namespace TSt\AdminProtect\commands;
 
-use TSt\AdminProtect\APIs\API;
+use TSt\AdminProtect\APIs\APCommand;
 use TSt\AdminProtect\Loader;
 use DateTime;
+
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
-class TempBanC extends API{
+use pocketmine\player\Player;
+class TempBanC extends APCommand{
     private $cfg;
     public function __construct(Loader $plugin){
-        parent::__construct($plugin, "tempban", "Temp ban specified player", "/tempban <player> <date or time> [reason...]", null, ["tban"]);
-        $this->setPermission("admin.protect.tempban.use");
+        parent::__construct($plugin, "tempban", "Temp ban specified player", "/tempban <player> <date or duration> [reason...]", null, ["tban"]);
+        $this->setPermission("adminprotect.tempban.use");
     }
     public function execute(CommandSender $sender, $alias, array $args): bool{
         if(!$this->testPermission($sender)){
@@ -42,26 +43,24 @@ class TempBanC extends API{
                 $sender->sendMessage("§4[AdminProtect]§c {$this->cfg->get("DateFormatError")}");
             }else{
                 $dt = \DateTime::createFromFormat("d.m.Y H:i:s", date("d.m.Y H:i:s", $banTime));
-                $p = $sender->getServer()->getPlayer($name);
+                $p = $sender->getServer()->getPlayerExact($name);
                 if($sender instanceof Player){
-                    $admin = $sender->getNameTag();
-                    $adminName = $sender->getName();
+                    $adminName = $sender->getNameTag();
                 }else{
-                    $admin = $admin = $this->cfg->get("Console");;
-                    $adminName = $admin = $this->cfg->get("Console");;
+                    $adminName = $this->cfg->get("Console");;
                 }
                 
                 if($p instanceof Player){
-                    if($p->hasPermission("admin.protect.tempban" )){
-                        if($sender instanceof Player and !$sender->hasPermission("admin.protect.tempban.protected")){
+                    if($p->hasPermission("adminprotect.tempban.protect" )){
+                        if($sender instanceof Player and !$sender->hasPermission("adminprotect.tempban.protected")){
                             $sender->sendMessage("§4[AdminProtect]§c {$this->cfg->get("CantBanPlayer")}");
                         }else{
                             $sender->getServer()->getNameBans()->addBan($name, $reason, $dt, $adminName);
-                            $kick_message = str_replace("%sender%", $admin, $this->cfg->get('TempBannedPlayerKickMessage'));
+                            $kick_message = str_replace("%sender%", $adminName, $this->cfg->get('TempBannedPlayerKickMessage'));
                             $kick_message = str_replace("%reason%", $reason, $kick_message);
                             $kick_message = str_replace("%duration%", date("d.m.Y H:i:s", $banTime), $kick_message);
                             $p->kick($kick_message);
-                            $broadcast = str_replace("%sender%", $admin, $this->cfg->get('TempBanBroadcast'));
+                            $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('TempBanBroadcast'));
                             $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);
                             $broadcast = str_replace("%reason%", $reason, $broadcast);
                             $broadcast = str_replace("%duration%", date("d.m.Y H:i:s", $banTime), $broadcast);
@@ -70,7 +69,7 @@ class TempBanC extends API{
                     }else{
                         $sender->getServer()->getNameBans()->addBan($name, $reason, $dt, $adminName);
                         $p->kick($kick_message);
-                        $broadcast = str_replace("%sender%", $admin, $this->cfg->get('TempBanBroadcast'));
+                        $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('TempBanBroadcast'));
                         $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);
                         $broadcast = str_replace("%reason%", $reason, $broadcast);
                         $broadcast = str_replace("%duration%", date("d.m.Y H:i:s", $banTime), $broadcast);
@@ -78,9 +77,9 @@ class TempBanC extends API{
                     }
                     
                 }else{
-                    if(!($sender instanceof Player) or $sender->hasPermission("admin.protect.tempban.use.offline")){
+                    if(!($sender instanceof Player) or $sender->hasPermission("adminprotect.tempban.use.offline")){
                         $sender->getServer()->getNameBans()->addBan($name, $reason, $dt, $adminName);
-                        $broadcast = str_replace("%sender%", $admin, $this->cfg->get('TempBanBroadcast'));
+                        $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('TempBanBroadcast'));
                         $broadcast = str_replace("%player%", $name, $broadcast);
                         $broadcast = str_replace("%reason%", $reason, $broadcast);
                         $broadcast = str_replace("%duration%", date("d.m.Y H:i:s", $banTime), $broadcast);

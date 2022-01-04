@@ -9,24 +9,28 @@ use TSt\AdminProtect\commands\UnbanIPC;
 use TSt\AdminProtect\commands\TempBanC;
 
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
-use pocketmine\permission\BanEntry;
+use TSt\AdminProtect\APIs\EventListener;
+use pocketmine\permission\PermissionManager;
+use pocketmine\permission\Permission;
+use TSt\AdminProtect\commands\TempBanIPC;
 
 class Loader extends PluginBase implements Listener{
     public $banInfoAPI = null;
-    public function onLoad(){
+    public function onLoad():void{
         $this->checkConfig();
 		$this->registerCommands();
     }
-	public function onEnable(){
+    public function onEnable():void{
 		$banInfoPlugin = $this->getServer()->getPluginManager()->getPlugin("BanInfo");
 		if($banInfoPlugin != null){
 		    $this->hasBanInfoPlugin = $this->checkCompatibility($banInfoPlugin);
 		}
-		$this->getServer()->getPluginManager()->registerEvents($this, $this);
+		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+		$perms = new PermissionManager();
+		$perms->addPermission(new Permission("adminprotect.*", "All plugin permissions", ["adminprotect.ban.protect", "adminprotect.ban.use", "adminprotect.ban.use.offline", "adminprotect.ban.use.protected", "adminprotect.tempban.protect", "adminprotect.tempban.use", "adminprotect.tempban.use.offline", "adminprotect.tempban.use.protected", "adminprotect.kick.protect", "adminprotect.kick.use", "adminprotect.kick.use.protected", "adminprotect.unban.use", "adminprotect.unbanip.use", "adminprotect.banip.protect", "adminprotect.banip.use", "adminprotect.banip.use.protected", "adminprotect.banip.use.permanent"]));
 	}
 	public function checkConfig(){
         if(!is_dir($this->getDataFolder())){
@@ -37,7 +41,7 @@ class Loader extends PluginBase implements Listener{
         }
         $this->saveResource("config.yml");
 		$cfg = $this->getConfig();
-		if(!$cfg->exists("version") || $cfg->get("version") !== "0.0.9"){
+		if(!$cfg->exists("version") || $cfg->get("version") !== "0.1.0"){
             $this->getLogger()->notice("Detected old or broken config.yml version!");
             $this->getLogger()->notice("Old configuration file saved as config.old.yml");
             $this->getLogger()->notice("Saving default configurtion file...");
@@ -49,35 +53,27 @@ class Loader extends PluginBase implements Listener{
 	}
 
 
-	private function unregisterCommands(array $commands){
-        $commandmap = $this->getServer()->getCommandMap();
-        foreach($commands as $commandlabel){
-            $command = $commandmap->getCommand($commandlabel);
-            try{
-                $command->setLabel($commandlabel . "_disabled");
-                $command->unregister($commandmap);
-            }catch (\Error $e){
-                //$this->getLogger()->notice("Error while deleting command: command /{$commandlabel} not found.");
-            }
-        }
-    }
     private function registerCommands(){
-        $this->unregisterCommands([
+        $defaultCMD = [
             "kick",
             "ban",
-            "ban-ip",
             "pardon",
-            "unban",
-            "unban-ip",
+            "ban-ip",
             "pardon-ip"
-        ]);
+        ];
+        $cmap = $this->getServer()->getCommandMap();
+        forEach($defaultCMD as $cmd){
+            $command = $cmap->getCommand($cmd);
+            $cmap->unregister($command);
+        }
         $this->getServer()->getCommandMap()->registerAll("AdminProtect", [
             new BanC($this),
             new KickC($this),
             new UnbanC($this),
             new BanIPC($this),
             new UnbanIPC($this),
-            new TempBanC($this)
+            new TempBanC($this),
+            new TempBanIPC($this),
 		]);
 	}
     
@@ -92,26 +88,6 @@ class Loader extends PluginBase implements Listener{
 	    return preg_match("/^($ipv4|$ipv6)\$/", trim($ip));
 	}
 	
-	
-	public function onPlayerPreLogin(PlayerPreLoginEvent $e){
-	    $name = mb_strtolower($e->getPlayer()->getName(), "UTF-8");
-	    $banEntry = $this->getServer()->getNameBans()->getEntry($name);
-	    if($banEntry != null){
-	        $banUntil = ($banEntry->getExpires() == null) ? null : $banEntry->getExpires()->getTimestamp();
-	        if($banUntil != null){
-	            $msg = $this->getConfig()->get("TempBannedPlayerKickMessage");
-	            $msg = str_replace('%sender%', $banEntry->getSource(), $msg);
-	            $msg = str_replace('%reason%', $banEntry->getReason(), $msg);
-	            $msg = str_replace('%duration%', date("d.m.Y H:i:s", $banUntil), $msg);
-	        }else{
-	            $msg = $this->getConfig()->get("BannedPlayerKickMessage");
-	            $msg = str_replace('%sender%', $banEntry->getSource(), $msg);
-	            $msg = str_replace('%reason%', $banEntry->getReason(), $msg);
-	        }
-	        $e->getPlayer()->kick($msg);
-	    }
-	}
-    
 	private function checkCompatibility(Plugin $plugin) : bool{
 	    $version = explode(' ', $plugin->getDescription()->getVersion());
 	    $version = explode('-', $version[0]);
