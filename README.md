@@ -1,50 +1,58 @@
 # AdminProtect
 AdminProtect is PocketMine-MP plugin that protects the administrator (or players with permissions) from being banned and kicked and prevent offline player ban.
 
+Now supports PMMP api 4.0.0+ only.
+
 ## Commands
-- /kick &lt;player&gt; [reason...] – kick player
-- /ban &lt;player&gt; [reason...] – ban player
-- /tempban &lt;player&gt; &lt;date or duration&gt; [reason...] – ban player temporary
+- /kick &lt;player&gt; [reason...] – kick specified player
+- /ban &lt;player&gt; [reason...] – ban specified player
+- /tempban &lt;player&gt; &lt;date or duration&gt; [reason...] – temporary ban specified player
 - /banip &lt;player or IP adress&gt; [reason...] – ban specified IP adress or specified player's IP adress
-- /unban &lt;player&gt; /pardon &lt;player&gt; – unban player
-- /unbanip &lt;IP&gt; /pardon-ip &lt;IP&gt; – unban IP adress
+- /tbanip &lt;player IP adress&gt; &lt;date or duration&gt; [reason...] – temporary ban specified IP adress or specified player's IP adress
+- /unban &lt;player&gt; /pardon &lt;player&gt; – unban specified player
+- /unbanip &lt;IP&gt; /pardon-ip &lt;IP&gt; – unban specified IP adress
   
 ## Permissions
-- admin.protect.* – all plugin permissions
-  - admin.protect.kick – Protection from /kick
-  - admin.protect.kick.use – Allow to use /kick
-  - admin.protect.kick.use.protected – Allow to kick players with protection
-  - admin.protect.ban – Protection from /ban
-  - admin.protect.ban.use – Allow to use /ban
-  - admin.protect.ban.use.offline – Allow to ban offline players
-  - admin.protect.ban.use.protected – Allow to ban players with protection
-  - admin.protect.tempban – Protection from /tempban
-  - admin.protect.tempban.use – Allow to use /tempban
-  - admin.protect.tempban.use.offline – Allow to temporary ban offline players
-  - admin.protect.tempban.use.protected – Allow to temporary ban players with protection
-  - admin.protect.unban.use – Allow to use /unban
-  - admin.protect.banip – Protection from /banip
-  - admin.protect.banip.use – Allow to use /banip (only ban online players' IP)
-  - admin.protect.banip.use.offline – Allow to ban offline players' IP
-  - admin.protect.banip.use.protected – Allow to IP-ban players with protection
-  - admin.protect.unbanip.use – Allow to /unbanip
+- adminprotect.* – all plugin permissions
+  - adminprotect.kick.protect – Protection from /kick
+  - adminprotect.kick.use – Allow to use /kick
+  - adminprotect.kick.use.protected – Allow to kick players with protection
+  - adminprotect.ban.protect – Protection from /ban
+  - adminprotect.ban.use – Allow to use /ban
+  - adminprotect.ban.use.offline – Allow to ban offline players
+  - adminprotect.ban.use.protected – Allow to ban players with protection
+  - adminprotect.tempban.protect – Protection from /tempban
+  - adminprotect.tempban.use – Allow to use /tempban
+  - adminprotect.tempban.use.offline – Allow to temporary ban offline players
+  - adminprotect.tempban.use.protected – Allow to temporary ban players with protection
+  - adminprotect.unban.use – Allow to use /unban
+  - adminprotect.banip.protect – Protection from /banip
+  - adminprotect.banip.use – Allow to use /tbanip (only ban online players' IP and only temporary ban)
+  - adminprotect.banip.use.offline – Allow to ban offline players' IP
+  - adminprotect.banip.use.protected – Allow to IP-ban players with protection
+  - adminprotect.banip.use.permanent – Allow to use /banip (for permanentrly ban)
+  - adminprotect.unbanip.use – Allow to /unbanip
+
+## Features
+- Protect admins from beign kicked, banned or ip-baned
+- Protect offline players from beign baned or ip-baned (we can't check if offline players have protection permissions)
+- - Players without ```adminprotect.banip.use.offline``` can't ban specified ip-adress, they can only ban specified online player nick
+- Special permissions for operators to ban and kick players with protection
+- Temporary ban and ip-ban
+- Broadcasting kick and ban messages for all players
   
 ## Temporary ban
-Command: /tempban &lt;player&gt; &lt;date or duration&gt; [reason...]
+You can specify the ban until date in the format dd.mm.YYYY (for example: 03.12.2022) or you can specify the ban duration time in the special format decribed below.
 
-Aliases: /tban
+(Ban duration is specifying without spaces)
 
-Arguments: 
-- &lt;player&gt; – player nickname
-- &lt;date or duration&gt; – ban end date (01.01.2026) or ban duration (1h30m, 5mo, etc)
-- [reason...] – ban reason
-
-Ban duration examples:
-- 1h – 1 hour
+Ban duration format:
+- 1s - 1 second
 - 1m – 1 minute
+- 1h – 1 hour
 - 1d – 1 day
 - 1w – 1 week
 - 1mo – 1 month
 - 1y – 1 year
 
-You can combine: 1h30m – 1 hour 30 minutes; 1w3d – 1 week 3 days, etc
+You can combine: ```1h30m``` – 1 hour 30 minutes; ```1w3d``` – 1 week 3 days, etc
