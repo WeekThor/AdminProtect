@@ -40,6 +40,7 @@ Now supports PMMP api 4.0.0+ only.
 - Special permissions for operators to ban and kick players with protection
 - Temporary ban and ip-ban
 - Broadcasting kick and ban messages for all players
+- Simple ban duration setting 
   
 ## Temporary ban
 You can specify the ban until date in the format dd.mm.YYYY (for example: 03.12.2022) or you can specify the ban duration time in the special format decribed below.
