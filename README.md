@@ -1,5 +1,5 @@
 # AdminProtect
-AdminProtect is PocketMine-MP plugin that protects the administrator (or players with permissions) from being banned and kicked and prevent offline player ban.
+AdminProtect is PocketMine-MP plugin that protects the administrator (players with special permissions) from being banned and kicked and prevent offline player ban.
 
 Now supports PMMP api 4.0.0+ only.
 
