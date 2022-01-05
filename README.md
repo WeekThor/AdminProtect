@@ -57,3 +57,8 @@ Ban duration format:
 - 1y – 1 year
 
 You can combine: ```1h30m``` – 1 hour 30 minutes; ```1w3d``` – 1 week 3 days, etc
+
+Or you can specify only count of days (```/tban Steve 13``` will block Steve for 13 days).
+
+### Some bugs...
+If you specify ```5mo30m3mo``` player will be banned for 8 months and 30 minutes (```5mo``` + ```3mo``` gives 8 months). But ```5mo3mo30m``` doesn't work.
