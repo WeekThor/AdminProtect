@@ -98,11 +98,13 @@ class Loader extends PluginBase implements Listener{
 	 * Returns parsed to DateTime ban duration or false if parse error
 	 * 
 	 * @param String $duration
-	 * @return int|false
+	 * @return int|bool
 	 */
-	public function parseDuration(String $duration):?int{
+	public function parseDuration(String $duration){
 	    if(DateTime::createFromFormat("d.m.Y", $duration) !== false){
 	        $banTime = strtotime($duration);
+	    }elseif(is_numeric($duration)){
+	        $banTime = strtotime(date('d.m.Y H:i:s')." +{$duration}days");
 	    }else{
 	        $time = preg_replace("/(\d+)(h)(\d+|$)/i", '${1}hours${3}', $duration);
 	        $time = preg_replace("/(\d+)(m)(\d+|$)/i", '${1}minutes${3}', $time);
