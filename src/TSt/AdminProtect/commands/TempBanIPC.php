@@ -21,26 +21,12 @@ class TempBanIPC extends APCommand{
         if(count($args) === 0){
             $sender->sendMessage("§4[AdminProtect]§c /tempbanip <{$this->cfg->get("Player")}|{$this->cfg->get("IP")}> <{$this->cfg->get("Date")}> [{$this->cfg->get("Reason")}...]");
         }else{
-            
             $name = array_shift($args);
             $until = array_shift($args);
-            $reason = implode(' ', $args);
-            if($reason == ''){
-                $reason = $this->cfg->get('DefaultBanReason');
-            }
+            $r = trim(implode(" ", $args));
+            $reason = ($r === '') ? $this->cfg->get('DefaultKickReason') : $r;
             
-            if(DateTime::createFromFormat("d.m.Y", $until) !== false){
-                $banTime = strtotime($until);
-            }else{
-                $time = preg_replace("/(\d+)(h)(\d+|$)/i", '${1}hours${3}', $until);
-                $time = preg_replace("/(\d+)(m)(\d+|$)/i", '${1}minutes${3}', $time);
-                $time = preg_replace("/(\d+)(mo)(\d+|$)/i", '${1}month${3}', $time);
-                $time = preg_replace("/(\d+)(s)(\d+|$)/i", '${1}seconds${3}', $time);
-                $time = preg_replace("/(\d+)(w)(\d+|$)/i", '${1}weeks${3}', $time);
-                $time = preg_replace("/(\d+)(d)(\d+|$)/i", '${1}days${3}', $time);
-                $time = preg_replace("/(\d+)(y)(\d+|$)/i", '${1}years${3}', $time);
-                $banTime = strtotime(date('d.m.Y H:i:s').' +'.$time);
-            }
+            $banTime = $this->getPlugin()->parseDuration($until);
             if($banTime === false){
                 $sender->sendMessage("§4[AdminProtect]§c {$this->cfg->get("DateFormatError")}");
             }else{
@@ -101,7 +87,6 @@ class TempBanIPC extends APCommand{
                         $broadcast = str_replace("%reason%", $reason, $broadcast);
                         $sender->getServer()->broadcastMessage($broadcast);
                     }
-                    
                 }else{
                     if(!($sender instanceof Player) or $sender->hasPermission("adminprotect.banip.use.offline")){
                         if($this->getPlugin()->isIPValid($name)){

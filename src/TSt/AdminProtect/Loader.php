@@ -8,10 +8,10 @@ use TSt\AdminProtect\commands\KickC;
 use TSt\AdminProtect\commands\UnbanIPC;
 use TSt\AdminProtect\commands\TempBanC;
 
+use DateTime;
 use pocketmine\event\Listener;
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginBase;
-use pocketmine\utils\Config;
 use TSt\AdminProtect\APIs\EventListener;
 use pocketmine\permission\PermissionManager;
 use pocketmine\permission\Permission;
@@ -19,6 +19,7 @@ use TSt\AdminProtect\commands\TempBanIPC;
 
 class Loader extends PluginBase implements Listener{
     public $banInfoAPI = null;
+    public $hasBanInfoPlugin = false;
     public function onLoad():void{
         $this->checkConfig();
 		$this->registerCommands();
@@ -29,6 +30,8 @@ class Loader extends PluginBase implements Listener{
 		    $this->hasBanInfoPlugin = $this->checkCompatibility($banInfoPlugin);
 		}
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+	//	$event = new EventListener($this);
+	//	$this->getServer()->getPluginManager()->registerEvent("PlayerPreLoginEvent", $event, 1, $this);
 		$perms = new PermissionManager();
 		$perms->addPermission(new Permission("adminprotect.*", "All plugin permissions", ["adminprotect.ban.protect", "adminprotect.ban.use", "adminprotect.ban.use.offline", "adminprotect.ban.use.protected", "adminprotect.tempban.protect", "adminprotect.tempban.use", "adminprotect.tempban.use.offline", "adminprotect.tempban.use.protected", "adminprotect.kick.protect", "adminprotect.kick.use", "adminprotect.kick.use.protected", "adminprotect.unban.use", "adminprotect.unbanip.use", "adminprotect.banip.protect", "adminprotect.banip.use", "adminprotect.banip.use.protected", "adminprotect.banip.use.permanent"]));
 	}
@@ -76,16 +79,41 @@ class Loader extends PluginBase implements Listener{
             new TempBanIPC($this),
 		]);
 	}
-    
-
-	public function Config($config = "config.yml") : Config{
-		return $this->getConfig($config);
-	}
 	
+	
+	/**
+	 * Check if input string is correct IPv4 or IPv6
+	 * 
+	 * @param String $ip
+	 * @return bool
+	 */
 	public function isIPValid($ip) : bool{
 	    $ipv4 = "[0-9]{1,3}(\.[0-9]{1,3}){3}";
 	    $ipv6 = "[0-9a-fA-F]{1,4}(\:[0-9a-fA-F]{1,4}){7}";
 	    return preg_match("/^($ipv4|$ipv6)\$/", trim($ip));
+	}
+	
+	
+	/**
+	 * Returns parsed to DateTime ban duration or false if parse error
+	 * 
+	 * @param String $duration
+	 * @return int|false
+	 */
+	public function parseDuration(String $duration):?int{
+	    if(DateTime::createFromFormat("d.m.Y", $duration) !== false){
+	        $banTime = strtotime($duration);
+	    }else{
+	        $time = preg_replace("/(\d+)(h)(\d+|$)/i", '${1}hours${3}', $duration);
+	        $time = preg_replace("/(\d+)(m)(\d+|$)/i", '${1}minutes${3}', $time);
+	        $time = preg_replace("/(\d+)(mo)(\d+|$)/i", '${1}month${3}', $time);
+	        $time = preg_replace("/(\d+)(s)(\d+|$)/i", '${1}seconds${3}', $time);
+	        $time = preg_replace("/(\d+)(w)(\d+|$)/i", '${1}weeks${3}', $time);
+	        $time = preg_replace("/(\d+)(d)(\d+|$)/i", '${1}days${3}', $time);
+	        $time = preg_replace("/(\d+)(y)(\d+|$)/i", '${1}years${3}', $time);
+	        $banTime = strtotime(date('d.m.Y H:i:s').' +'.$time);
+	    }
+	    return $banTime;
 	}
 	
 	private function checkCompatibility(Plugin $plugin) : bool{

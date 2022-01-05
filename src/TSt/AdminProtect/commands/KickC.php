@@ -23,7 +23,7 @@ class KickC extends APCommand{
             
             $name = array_shift($args);
             $r = trim(implode(" ", $args));
-            $reason = ($r === null) ? $this->cfg->get('DefaultKickReason') : $r;
+            $reason = ($r === '') ? $this->cfg->get('DefaultKickReason') : $r;
         
             if($sender instanceof Player){
                 $admin = $sender->getNameTag();

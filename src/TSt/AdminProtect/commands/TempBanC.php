@@ -23,22 +23,9 @@ class TempBanC extends APCommand{
         }else{
             $name = array_shift($args);
             $until = array_shift($args);
-            $reason = implode(' ', $args);
-            if($reason == ''){
-                $reason = $this->cfg->get('DefaultBanReason');
-            }
-            if(DateTime::createFromFormat("d.m.Y", $until) !== false){
-                $banTime = strtotime($until);
-            }else{
-                $time = preg_replace("/(\d+)(h)(\d+|$)/i", '${1}hours${3}', $until);
-                $time = preg_replace("/(\d+)(m)(\d+|$)/i", '${1}minutes${3}', $time);
-                $time = preg_replace("/(\d+)(mo)(\d+|$)/i", '${1}month${3}', $time);
-                $time = preg_replace("/(\d+)(s)(\d+|$)/i", '${1}seconds${3}', $time);
-                $time = preg_replace("/(\d+)(w)(\d+|$)/i", '${1}weeks${3}', $time);
-                $time = preg_replace("/(\d+)(d)(\d+|$)/i", '${1}days${3}', $time);
-                $time = preg_replace("/(\d+)(y)(\d+|$)/i", '${1}years${3}', $time);
-                $banTime = strtotime(date('d.m.Y H:i:s').' +'.$time);
-            }
+            $r = trim(implode(" ", $args));
+            $reason = ($r === '') ? $this->cfg->get('DefaultKickReason') : $r;
+            $banTime = $this->getPlugin()->parseDuration($until);
             if($banTime === false){
                 $sender->sendMessage("§4[AdminProtect]§c {$this->cfg->get("DateFormatError")}");
             }else{
@@ -49,6 +36,9 @@ class TempBanC extends APCommand{
                 }else{
                     $adminName = $this->cfg->get("Console");;
                 }
+                $kick_message = str_replace("%sender%", $adminName, $this->cfg->get('TempBannedPlayerKickMessage'));
+                $kick_message = str_replace("%reason%", $reason, $kick_message);
+                $kick_message = str_replace("%duration%", date("d.m.Y H:i:s", $banTime), $kick_message);
                 
                 if($p instanceof Player){
                     if($p->hasPermission("adminprotect.tempban.protect" )){
@@ -56,9 +46,6 @@ class TempBanC extends APCommand{
                             $sender->sendMessage("§4[AdminProtect]§c {$this->cfg->get("CantBanPlayer")}");
                         }else{
                             $sender->getServer()->getNameBans()->addBan($name, $reason, $dt, $adminName);
-                            $kick_message = str_replace("%sender%", $adminName, $this->cfg->get('TempBannedPlayerKickMessage'));
-                            $kick_message = str_replace("%reason%", $reason, $kick_message);
-                            $kick_message = str_replace("%duration%", date("d.m.Y H:i:s", $banTime), $kick_message);
                             $p->kick($kick_message);
                             $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('TempBanBroadcast'));
                             $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);

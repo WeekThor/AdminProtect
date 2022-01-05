@@ -19,17 +19,10 @@ class BanC extends APCommand{
         if(count($args) === 0){
             $sender->sendMessage("§4[AdminProtect]§c /ban <{$this->cfg->get("Player")}> [{$this->cfg->get("Reason")}...]");
         }else{
-            
-            $defaultreason = $this->cfg->get('DefaultBanReason');
             $name = array_shift($args);
             $r = trim(implode(" ", $args));
-            if($r == null){
-                $reason = $defaultreason;
-            }else{
-                $reason = $r;
-            }
+            $reason = ($r === '') ? $this->cfg->get('DefaultKickReason') : $r;
             $p = $sender->getServer()->getPlayerExact($name);
-            
             
             if($sender instanceof Player){
                 $adminName = $sender->getNameTag();

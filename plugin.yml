@@ -1,7 +1,7 @@
 ﻿name: AdminProtect
 main: TSt\AdminProtect\Loader
 api: 4.0.0
-version: 2.0.0-beta-1
+version: 2.0.0-beta-2
 authors: ["WeekThor"]
 description: "Protect the administrator or player with permissions from being banned and kicked and prevent offline ban"
 softdepend: [BanInfo]
@@ -42,9 +42,15 @@ permissions:
   adminprotect.unban.use:
     description: "Access to use /unban"
     default: op
+#  adminprotect.unban.other:
+#    description: "Access to unban players banned by other admins"
+#    default: op
   adminprotect.unbanip.use:
     description: "Access to use /unbanip"
     default: op
+#  adminprotect.unbanip.other:
+#    description: "Access to unban ip banned by other admins"
+#    default: op
   adminprotect.banip.protect:
     description: "Protection from IP ban (if player online)"
     default: op
@@ -60,3 +66,33 @@ permissions:
   adminprotect.banip.use.permanent:
     description: "Access to use /banip for permanently ban IP"
     default: op
+#  adminprotect.baninfo.use:
+#    description: "Access to use /baninfo command"
+#    default: op
+#  adminprotect.history.use:
+#    description: "Access to see self ban history"
+#    default: true
+#  adminprotect.history.use.other:
+#    description: "Access to see other players ban history"
+#    default: op
+#  adminprotect.history.hide:
+#    description: "Do not save players ban history"
+#    default: op
+#  adminprotect.history.clear:
+#    description: "Access to use /clearhistory command"
+#    default: op
+#  adminprotect.ip.hide:
+#    description: "Do not save players last ip-adress"
+#    default: op
+#  adminprotect.gamemode.survival:
+#    description: "Allow players to be in survival mode"
+#    default: op
+#  adminprotect.gamemode.creative:
+#    description: "Allow players to be in creative mode"
+#    default: op
+#  adminprotect.gamemode.advanture:
+#    description: "Allow players to be in advanture mode"
+#    default: op
+#  adminprotect.gamemode.spectator:
+#    description: "Allow players to be in spectator mode"
+#    default: op
