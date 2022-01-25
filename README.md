@@ -26,6 +26,7 @@ Now supports PMMP api 4.0.0+ only.
   - adminprotect.tempban.use.offline – Allow to temporary ban offline players
   - adminprotect.tempban.use.protected – Allow to temporary ban players with protection
   - adminprotect.unban.use – Allow to use /unban
+  - adminprotect.unban.except.&lt;admin&gt; - prevent unblocking players/IPs that have been banned by &lt;admin&gt; (nick must be in lowercase)
   - adminprotect.banip.protect – Protection from /banip
   - adminprotect.banip.use – Allow to use /tbanip (only ban online players' IP and only temporary ban)
   - adminprotect.banip.use.offline – Allow to ban offline players' IP
@@ -38,6 +39,7 @@ Now supports PMMP api 4.0.0+ only.
 - Protect offline players from beign baned or ip-baned (we can't check if offline players have protection permissions)
 - - Players without ```adminprotect.banip.use.offline``` can't ban specified ip-adress, they can only ban specified online player nick
 - Special permissions for operators to ban and kick players with protection
+- Prevent unblocking players that banned by specified admins
 - Temporary ban and ip-ban
 - Broadcasting kick and ban messages for all players
 - Simple ban duration setting 
@@ -62,3 +64,10 @@ Or you can specify only count of days (```/tban Steve 13``` will block Steve for
 
 ### Some bugs...
 If you specify ```5mo30m3mo``` player will be banned for 8 months and 30 minutes (```5mo``` + ```3mo``` gives 8 months). But ```5mo3mo30m``` doesn't work.
+
+## Prevent unblocking
+in beta....
+
+If player has `adminprotect.unban.except.<admin>`, he will not able to unban a player banned by &lt;admin&gt; (admin nick must be in lowercase).
+
+For example: `adminprotect.unban.except.console` will be prevent unblocking players banned by CONSOLE (`CONSOLE` can be changed in config.yml)
