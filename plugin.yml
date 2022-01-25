@@ -1,7 +1,7 @@
 ﻿name: AdminProtect
 main: TSt\AdminProtect\Loader
 api: 4.0.0
-version: 2.0.0-beta-3
+version: 2.0.0-beta-4
 authors: ["WeekThor"]
 description: "Protect the administrator or player with permissions from being banned and kicked and prevent offline ban"
 softdepend: [BanInfo]
@@ -68,18 +68,6 @@ permissions:
     default: op
 #  adminprotect.baninfo.use:
 #    description: "Access to use /baninfo command"
-#    default: op
-#  adminprotect.history.use:
-#    description: "Access to see self ban history"
-#    default: true
-#  adminprotect.history.use.other:
-#    description: "Access to see other players ban history"
-#    default: op
-#  adminprotect.history.hide:
-#    description: "Do not save players ban history"
-#    default: op
-#  adminprotect.history.clear:
-#    description: "Access to use /clearhistory command"
 #    default: op
 #  adminprotect.ip.hide:
 #    description: "Do not save players last ip-adress"

@@ -26,15 +26,14 @@ class UnbanC extends APCommand{
                 $admin = $this->cfg->get("Console");
             }
             $name = array_shift($args);
-            $allow_unban = true;
-            if($this->getPlugin()->banInfoAPI != null){
-                $banInfo = $this->getPlugin()->banInfoAPI->getBanInfo(false);
-                if($banInfo->get($name) == null){
-                    $allow_unban = false;
+            $bannedPlayer = $this->getPlugin()->getServer()->getNameBans()->getEntry($name);
+            if($bannedPlayer !== null){
+                if($sender instanceof Player){
+                    if($sender->hasPermission("adminprotect.unban.except.".mb_strtolower($bannedPlayer->getSource()))){
+                        $sender->sendMessage("§4[AdminProtect] §c".str_replace("%sender%", $bannedPlayer->getSource(), $this->cfg->get("CantUnbanBannedBy")));
+                        return false;
+                    }
                 }
-            }
-            if($allow_unban){
-               
                 $broadcast = $this->cfg->get("UnbanBroadcast");
                 $broadcast = str_replace("%sender%", $admin, $broadcast);
                 $broadcast = str_replace("%player%", $name, $broadcast);

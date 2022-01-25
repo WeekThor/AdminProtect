@@ -21,7 +21,7 @@ class BanIPC extends APCommand{
         }else{
             $name = array_shift($args);
             $r = trim(implode(" ", $args));
-            $reason = ($r === '') ? $this->cfg->get('DefaultKickReason') : $r;
+            $reason = ($r === '') ? $this->cfg->get('DefaultBanReason') : $r;
             
             if($sender instanceof Player){
                 $adminName = $sender->getNameTag();

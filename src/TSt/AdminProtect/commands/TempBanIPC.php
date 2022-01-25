@@ -24,7 +24,7 @@ class TempBanIPC extends APCommand{
             $name = array_shift($args);
             $until = array_shift($args);
             $r = trim(implode(" ", $args));
-            $reason = ($r === '') ? $this->cfg->get('DefaultKickReason') : $r;
+            $reason = ($r === '') ? $this->cfg->get('DefaultBanReason') : $r;
             
             $banTime = $this->getPlugin()->parseDuration($until);
             if($banTime === false){

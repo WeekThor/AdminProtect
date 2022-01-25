@@ -21,7 +21,7 @@ class BanC extends APCommand{
         }else{
             $name = array_shift($args);
             $r = trim(implode(" ", $args));
-            $reason = ($r === '') ? $this->cfg->get('DefaultKickReason') : $r;
+            $reason = ($r === '') ? $this->cfg->get('DefaultBanReason') : $r;
             $p = $sender->getServer()->getPlayerExact($name);
             
             if($sender instanceof Player){

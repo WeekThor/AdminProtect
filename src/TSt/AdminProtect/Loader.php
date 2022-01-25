@@ -44,7 +44,7 @@ class Loader extends PluginBase implements Listener{
         }
         $this->saveResource("config.yml");
 		$cfg = $this->getConfig();
-		if(!$cfg->exists("version") || $cfg->get("version") !== "0.1.0"){
+		if(!$cfg->exists("version") || $cfg->get("version") !== "0.1.1"){
             $this->getLogger()->notice("Detected old or broken config.yml version!");
             $this->getLogger()->notice("Old configuration file saved as config.old.yml");
             $this->getLogger()->notice("Saving default configurtion file...");

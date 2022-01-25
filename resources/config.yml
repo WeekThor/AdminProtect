@@ -1,4 +1,4 @@
-version: 0.1.0
+version: 0.1.1
 #IF YOU CHANGE THIS, THE CONFIG WILL REVERT TO ITS ORIGINAL VERSION
 
 
@@ -32,7 +32,8 @@ Console: "CONSOLE"   # Admin name (%sender%) when kick/ban from console
 CantBanPlayer: "You can't ban this player!"
 CantKickPlayer: "You can't kick this player!"
 CantBanOffline: "You can't ban player that in offline"     
-PlayerNotFound: "Player not found or offline"    
+PlayerNotFound: "Player not found or offline"
+CantUnbanBannedBy: "You can't unban a player banned by %sender%"   
 DateFormatError: "Ban duration error"
 IncorrectIP: "Specify IP adress"   # Message..:
 forBan: "to ban"                   # "[AdminProtect] Specify IP adress to ban"

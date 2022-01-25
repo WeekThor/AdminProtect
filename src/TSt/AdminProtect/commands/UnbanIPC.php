@@ -26,15 +26,15 @@ class UnbanIPC extends APCommand{
                 $admin = $this->cfg->get("Console");
             }
             $name = array_shift($args);
-            $allow_unban = true;
-            if($this->getPlugin()->banInfoAPI != null){
-                $banInfo = $this->getPlugin()->banInfoAPI->getBanInfo(true);
-                if($banInfo->get($name) == null){
-                    $allow_unban = false;
-                }
-            }
-            if($allow_unban){
-                if($this->getPlugin()->isIPValid($name)){
+            if($this->getPlugin()->isIPValid($name)){
+                $bannedPlayer = $this->getPlugin()->getServer()->getIPBans()->getEntry($name);
+                if($bannedPlayer !== null){
+                    if($sender instanceof Player){
+                        if($sender->hasPermission("adminprotect.unban.except.".mb_strtolower($bannedPlayer->getSource()))){
+                            $sender->sendMessage("§4[AdminProtect] §c".str_replace("%sender%", $bannedPlayer->getSource(), $this->cfg->get("CantUnbanBannedBy")));
+                            return false;
+                        }
+                    }
                     $broadcast = $this->cfg->get("UnbanBroadcast");
                     $broadcast = str_replace("%sender%", $admin, $broadcast);
                     $broadcast = str_replace("%player%", $name, $broadcast);
@@ -42,10 +42,10 @@ class UnbanIPC extends APCommand{
                     $sender->getServer()->getNetwork()->unblockAddress($name);
                     $sender->getServer()->broadcastMessage($broadcast);
                 }else{
-                    $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("IncorrectIP")} {$this->cfg->get("forUnban")}");
+                    $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("IPNotBanned")} {$this->cfg->get("forUnban")}");
                 }
             }else{
-                $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("IPNotBanned")}");
+                $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("IncorrectIP")}");
             }
         }
         return true;
