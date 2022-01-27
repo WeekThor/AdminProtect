@@ -42,10 +42,10 @@ class UnbanIPC extends APCommand{
                     $sender->getServer()->getNetwork()->unblockAddress($name);
                     $sender->getServer()->broadcastMessage($broadcast);
                 }else{
-                    $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("IPNotBanned")} {$this->cfg->get("forUnban")}");
+                    $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("IPNotBanned")}");
                 }
             }else{
-                $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("IncorrectIP")}");
+                $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("IncorrectIP")} {$this->cfg->get("forUnban")}");
             }
         }
         return true;

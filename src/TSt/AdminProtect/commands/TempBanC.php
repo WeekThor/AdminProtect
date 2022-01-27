@@ -40,7 +40,7 @@ class TempBanC extends APCommand{
                 }
                 $kick_message = str_replace("%sender%", $adminName, $this->cfg->get('TempBannedPlayerKickMessage'));
                 $kick_message = str_replace("%reason%", $reason, $kick_message);
-                $kick_message = str_replace("%duration%", date("d.m.Y H:i:s", $banTime), $kick_message);
+                $kick_message = str_replace("%duration%", date("d.m.Y H:i:s O", $banTime), $kick_message);
                 
                 $bannedPlayer = $this->getPlugin()->getServer()->getNameBans()->getEntry($name);
                 if($bannedPlayer !== null){

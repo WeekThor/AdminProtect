@@ -41,7 +41,7 @@ class TempBanIPC extends APCommand{
                 }
                 
                 $kick_message = str_replace("%sender%", $adminName, $this->cfg->get('TempBannedIPKickMessage'));
-                $kick_message = str_replace("%duration%", date("d.m.Y H:i:s", $banTime), $kick_message);
+                $kick_message = str_replace("%duration%", date("d.m.Y H:i:s O", $banTime), $kick_message);
                 $kick_message = str_replace("%reason%", $reason, $kick_message);
                 $ip = "";
                 $broadcast = "";

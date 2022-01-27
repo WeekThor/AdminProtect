@@ -65,9 +65,9 @@ permissions:
   adminprotect.banip.use.permanent:
     description: "Access to use /banip for permanently ban IP"
     default: op
-#  adminprotect.baninfo.use:
-#    description: "Access to use /baninfo command"
-#    default: op
+  adminprotect.baninfo.use:
+    description: "Access to use /baninfo command"
+    default: op
 #  adminprotect.ip.hide:
 #    description: "Do not save players last ip-adress"
 #    default: op
