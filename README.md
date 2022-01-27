@@ -40,6 +40,7 @@ Now supports PMMP api 4.0.0+ only.
 - - Players without ```adminprotect.banip.use.offline``` can't ban specified ip-adress, they can only ban specified online player nick
 - Special permissions for operators to ban and kick players with protection
 - Prevent unblocking players that banned by specified admins
+- Prevent editing bans issued by specified admins
 - Temporary ban and ip-ban
 - Broadcasting kick and ban messages for all players
 - Simple ban duration setting 
@@ -47,20 +48,18 @@ Now supports PMMP api 4.0.0+ only.
 ## Temporary ban
 You can specify the ban until date in the format dd.mm.YYYY (for example: 03.12.2022) or you can specify the ban duration time in the special format decribed below.
 
-(Ban duration is specifying without spaces)
-
 Ban duration format:
-- 1s - 1 second
-- 1m – 1 minute
-- 1h – 1 hour
-- 1d – 1 day
-- 1w – 1 week
-- 1mo – 1 month
-- 1y – 1 year
+- `1s` - 1 second
+- `1m` – 1 minute
+- `1h` – 1 hour
+- `1d` – 1 day
+- `1w` – 1 week
+- `1mo` – 1 month
+- `1y` – 1 year
 
-You can combine: ```1h30m``` – 1 hour 30 minutes; ```1w3d``` – 1 week 3 days, etc
+Ban duration is specifying without spaces: `/tban Steve 1h30m` will ban Steve for 1 hour 30 minutes; `/tban Steve 1w3d` will ban Steve for 1 week 3 days, etc
 
-Or you can specify only count of days (```/tban Steve 13``` will block Steve for 13 days).
+Or you can specify only count of days (```/tban Steve 13``` will ban Steve for 13 days).
 
 ### Some bugs...
 If you specify ```5mo30m3mo``` player will be banned for 8 months and 30 minutes (```5mo``` + ```3mo``` gives 8 months). But ```5mo3mo30m``` doesn't work.
@@ -68,6 +67,6 @@ If you specify ```5mo30m3mo``` player will be banned for 8 months and 30 minutes
 ## Prevent unblocking
 in beta....
 
-If player has `adminprotect.unban.except.<admin>`, he will not able to unban a player banned by &lt;admin&gt; (admin nick must be in lowercase).
+If player has `adminprotect.unban.except.<admin>`, he will not be able to unban a player banned by &lt;admin&gt; (admin nick must be in lowercase). Also he will not be able to edit the ban issued by &lt;admin&gt;.This also applies to unblocking and editing an IP ban.
 
 For example: `adminprotect.unban.except.console` will be prevent unblocking players banned by CONSOLE (`CONSOLE` can be changed in config.yml)
