@@ -26,51 +26,40 @@ class BanC extends APCommand{
             
             if($sender instanceof Player){
                 $adminName = $sender->getNameTag();
+                $admin = $sender->getName();
             }else{
-                $adminName = $this->cfg->get("Console");;
+                $adminName = $this->cfg->get("Console");
+                $admin = $adminName;
             }
             $kick_message = str_replace("%sender%", $adminName, $this->cfg->get('BannedPlayerKickMessage'));
             $kick_message = str_replace("%reason%", $reason, $kick_message);
-        
+            
+            $bannedPlayer = $this->getPlugin()->getServer()->getNameBans()->getEntry($name);
+            if($bannedPlayer !== null){
+                if($sender instanceof Player and $sender->hasPermission("adminprotect.unban.except.".mb_strtolower($bannedPlayer->getSource()))){
+                    $sender->sendMessage("§4[AdminProtect] §c".str_replace("%sender%", $bannedPlayer->getSource(), $this->cfg->get("CantEditBan")));
+                    return false;
+                }
+            }
             if($p instanceof Player){
                 if($p->hasPermission("adminprotect.ban.protect" )){
                     if($sender instanceof Player and !$sender->hasPermission("adminprotect.ban.protected")){
                         $sender->sendMessage("§4[AdminProtect]§c {$this->cfg->get("CantBanPlayer")}");
-                    }else{
-                        $sender->getServer()->getNameBans()->addBan($name, $reason, null, $adminName);
-                        $kick_message = str_replace("%sender%", $adminName, $this->cfg->get('BannedPlayerKickMessage'));
-                        $kick_message = str_replace("%reason%", $reason, $kick_message);
-                        $p->kick($kick_message);
-                        $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('BanBroadcast'));
-                        $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);
-                        $broadcast = str_replace("%reason%", $reason, $broadcast);
-                        $sender->getServer()->broadcastMessage($broadcast);
+                        return false;
                     }
-                }else{
-                    $sender->getServer()->getNameBans()->addBan($name, $reason, null, $adminName);
-                    $p->kick($kick_message);
-                    $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('BanBroadcast'));
-                    $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);
-                    $broadcast = str_replace("%reason%", $reason, $broadcast);
-                    $sender->getServer()->broadcastMessage($broadcast);
                 }
-            
+                $p->kick($kick_message);
             }else{
-                if(!($sender instanceof Player) or $sender->hasPermission("adminprotect.ban.use.offline")){
-                    $sender->getServer()->getNameBans()->addBan($name, $reason, null, $adminName);
-                    $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('BanBroadcast'));
-                    $broadcast = str_replace("%player%", $name, $broadcast);
-                    $broadcast = str_replace("%reason%", $reason, $broadcast);
-                    $sender->getServer()->broadcastMessage($broadcast);
-                }else{
+                if($sender instanceof Player and !$sender->hasPermission("adminprotect.ban.use.offline")){
                     $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("CantBanOffline")}");
+                    return false;
                 }
-                
             }
-            if($this->getPlugin()->banInfoAPI != null){
-                $api = $this->getPlugin()->banInfoAPI;
-                $api->updateHistory($name);
-            }
+            $sender->getServer()->getNameBans()->addBan($name, $reason, null, $admin);
+            $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('BanBroadcast'));
+            $broadcast = str_replace("%player%", $name, $broadcast);
+            $broadcast = str_replace("%reason%", $reason, $broadcast);
+            $sender->getServer()->broadcastMessage($broadcast);
             
         }
         return true;

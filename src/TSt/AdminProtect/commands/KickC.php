@@ -20,7 +20,6 @@ class KickC extends APCommand{
         if(count($args) === 0){
           $sender->sendMessage("§4[AdminProtect]§c /kick <{$this->cfg->get("Player")}> [{$this->cfg->get("Reason")}...]");
         }else{
-            
             $name = array_shift($args);
             $r = trim(implode(" ", $args));
             $reason = ($r === '') ? $this->cfg->get('DefaultKickReason') : $r;
@@ -37,26 +36,17 @@ class KickC extends APCommand{
                 if($p->hasPermission("adminprotect.kick.protect" )){
                     if($sender instanceof Player and !$sender->hasPermission("adminprotect.kick.use.protected")){
                         $sender->sendMessage("§4[AdminProtect]§c {$this->cfg->get("CantKickPlayer")}");
-                    }else{
-                        $p->kick($kick_message);
-                        $broad = str_replace("%sender%", $admin, $this->cfg->get('KickBroadcast'));
-                        $broadc = str_replace("%player%", $p->getNameTag(), $broad);
-                        $broadcast = str_replace("%reason%", $reason, $broadc);
-                        $sender->getServer()->broadcastMessage($broadcast);
+                        return false;
                     }
-                    return false;
-                }else{
-                    $p->kick($kick_message);
-                    $broadcast = str_replace("%sender%", $admin, $this->cfg->get('KickBroadcast'));
-                    $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);
-                    $broadcast = str_replace("%reason%", $reason, $broadcast);
-                    $sender->getServer()->broadcastMessage($broadcast);
-                    return false;
-                } 
-        
+                }
+                $p->kick($kick_message);
+                $broadcast = str_replace("%sender%", $admin, $this->cfg->get('KickBroadcast'));
+                $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);
+                $broadcast = str_replace("%reason%", $reason, $broadcast);
+                $sender->getServer()->broadcastMessage($broadcast); 
             }else{
                 $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("PlayerNotFound")}");
-                return true;
+                return false;
             }
         
         }

@@ -1,4 +1,4 @@
-version: 0.1.1
+version: 0.1.2
 #IF YOU CHANGE THIS, THE CONFIG WILL REVERT TO ITS ORIGINAL VERSION
 
 
@@ -28,25 +28,20 @@ BannedIPKickMessage: "Your IP was blocked on this server. Reason: %reason% (%sen
 TempBanIPBroadcast: "§6Player §c%sender%§6 banned IP adress §c%player%§6 until §c%duration%§6. Reason: §c%reason%§6."  # Boadcast message about temporary ip ban (all players can see)
 TempBannedIPKickMessage: "Your IP was blocked on this server until %duration%. Reason: %reason% (%sender%§r)"          # Message on temporary banned player screen
 UnbanBroadcast: "§6Player §c%sender%§6 unbanned §c%player%§6."                                                         # Boadcast message about unban (all players can see)
+PlayerNotBanned: "This player is not banned."
+IPNotBanned: "This IP is not banned."
 Console: "CONSOLE"   # Admin name (%sender%) when kick/ban from console
-CantBanPlayer: "You can't ban this player!"
-CantKickPlayer: "You can't kick this player!"
-CantBanOffline: "You can't ban player that in offline"     
-PlayerNotFound: "Player not found or offline"
-CantUnbanBannedBy: "You can't unban a player banned by %sender%"   
+CantBanPlayer: "You're not permitted to ban this player!"
+CantKickPlayer: "You're not permitted to kick this player!"
+CantBanOffline: "You're not permitted to ban player who is offline!"
+CantUnbanBannedBy: "You're not permitted to unban a player banned by %sender%!"
+#NEW
+CantEditBan: "You're not permitted to edit this ban!"   
+PlayerNotFound: "Player not found or offline" 
 DateFormatError: "Ban duration error"
 IncorrectIP: "Specify IP adress"   # Message..:
 forBan: "to ban"                   # "[AdminProtect] Specify IP adress to ban"
 forUnban: "to unban"               # "[AdminProtect] Specify IP adress to unban"
-
-
-
-# ADDITIONAL MESSAGES
-# Plusin 'BanInfo' by TSt is required for these message to work
-# Minimal plugin 'BanInfo' version: 1.14.0
-
-PlayerNotBanned: "That player is not banned."
-IPNotBanned: "That IP is not banned."
 
 
 # OTHER MESSAGES 

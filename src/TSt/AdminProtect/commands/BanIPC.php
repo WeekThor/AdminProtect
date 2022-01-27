@@ -25,81 +25,61 @@ class BanIPC extends APCommand{
             
             if($sender instanceof Player){
                 $adminName = $sender->getNameTag();
+                $admin = $sender->getName();
             }else{
                 $adminName = $this->cfg->get("Console");
+                $admin = $adminName;
             }
             $kick_message = str_replace("%sender%", $adminName, $this->cfg->get('BannedIPKickMessage'));
             $kick_message = str_replace("%reason%", $reason, $kick_message);
+            $ip = "";
+            $broadcast = "";
         
+            $bannedPlayer = $this->getPlugin()->getServer()->getIPBans()->getEntry($name);
+            if($bannedPlayer !== null){
+                if($sender instanceof Player and $sender->hasPermission("adminprotect.unban.except.".mb_strtolower($bannedPlayer->getSource()))){
+                    $sender->sendMessage("§4[AdminProtect] §c".str_replace("%sender%", $bannedPlayer->getSource(), $this->cfg->get("CantEditBan")));
+                    return false;
+                }
+            }
             if(($p = $sender->getServer()->getPlayerByPrefix($name)) instanceof Player){
+                $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('BanIPBroadcast'));
+                $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);
+                $broadcast = str_replace("%reason%", $reason, $broadcast);
                 if($p->hasPermission("adminprotect.banip.protect" )){
                     if($sender instanceof Player and !$sender->hasPermission("adminprotect.banip.use.protected")){
                         $sender->sendMessage("§4[AdminProtect]§c {$this->cfg->get("CantBanPlayer")}");
-                    }else{
-                        $sender->getServer()->getIPBans()->addBan($p->getNetworkSession()->getIp(), $reason, null, $adminName);
-                        
-                        // if also block network, banned player will not see server status
-                        // and "You are banned" message when trying to connect
-                        // I don't know, block adress or not...
-                        //$sender->getServer()->getNetwork()->blockAddress($p->getNetworkSession()->getIp(), -1);
-                        $players = $sender->getServer()->getOnlinePlayers();
-                        foreach ($players as $player){
-                            if($player->getNetworkSession()->getIp() === $p->getNetworkSession()->getIp()){
-                                $player->kick($kick_message);
-                            }
-                        }
-                        
-                        $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('BanIPBroadcast'));
-                        $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);
-                        $broadcast = str_replace("%reason%", $reason, $broadcast);
-                        $sender->getServer()->broadcastMessage($broadcast);
+                        return false;
                     }
-                }else{
-                    $sender->getServer()->getIPBans()->addBan($p->getNetworkSession()->getIp(), $reason, null, $adminName);
-                    
-                    // if also block network, banned player will not see server status
-                    // and "You are banned" message when trying to connect
-                    // I don't know, block adress or not...
-                    //$sender->getServer()->getNetwork()->blockAddress($p->getNetworkSession()->getIp(), -1);
-                    $players = $sender->getServer()->getOnlinePlayers();
-                    foreach ($players as $player){
-                        if($player->getNetworkSession()->getIp() === $p->getNetworkSession()->getIp()){
-                            $player->kick($kick_message);
-                        }
-                    }
-                    
-                    $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('BanIPBroadcast'));
-                    $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);
-                    $broadcast = str_replace("%reason%", $reason, $broadcast);
-                    $sender->getServer()->broadcastMessage($broadcast);
                 }
-            
+                $ip = $p->getNetworkSession()->getIp();
             }else{
-                if(!($sender instanceof Player) or $sender->hasPermission("adminprotect.banip.use.offline")){
-                    if($this->getPlugin()->isIPValid($name)){
-                        $sender->getServer()->getIPBans()->addBan($name, $reason, null, $adminName);
-                        
-                        // if also block network, banned player will not see server status
-                        // and "You are banned" message when trying to connect
-                        // I don't know, block adress or not...
-                        //$sender->getServer()->getNetwork()->blockAddress($name, -1);
-                        $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('BanIPBroadcast'));
-                        $broadcast = str_replace("%player%", $name, $broadcast);
-                        $broadcast = str_replace("%reason%", $reason, $broadcast);
-                        $sender->getServer()->broadcastMessage($broadcast);
-                        $players = $sender->getServer()->getOnlinePlayers();
-                        foreach ($players as $player){
-                            if($player->getNetworkSession()->getIp() === $name){
-                                $player->kick($kick_message);
-                            }
-                        }
-                    }else{
-                        $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("IncorrectIP")} {$this->cfg->get("forBan")}");
-                    }
-                }else{
-                    $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("CantBanPOffline")}");
+                $ip = $name;
+                $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('BanIPBroadcast'));
+                $broadcast = str_replace("%player%", $ip, $broadcast);
+                $broadcast = str_replace("%reason%", $reason, $broadcast);
+                if($sender instanceof Player and !$sender->hasPermission("adminprotect.banip.use.offline")){
+                    $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("CantBanOffline")}");
+                    return false;
                 }
-                
+                if(!$this->getPlugin()->isIPValid($ip)){
+                    $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("IncorrectIP")} {$this->cfg->get("forBan")}");
+                    return false;
+                }
+            }
+            $sender->getServer()->getIPBans()->addBan($ip, $reason, null, $admin);
+                    
+            // if also block network, banned player will not see server status
+            // and "You are banned" message when trying to connect
+            // I don't know, block adress or not...
+            //$sender->getServer()->getNetwork()->blockAddress($name, -1);
+            
+            $sender->getServer()->broadcastMessage($broadcast);
+            $players = $sender->getServer()->getOnlinePlayers();
+            foreach ($players as $player){
+                if($player->getNetworkSession()->getIp() === $ip){
+                    $player->kick($kick_message);
+                 }
             }
             
         }

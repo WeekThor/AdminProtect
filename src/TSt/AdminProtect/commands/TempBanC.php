@@ -33,53 +33,42 @@ class TempBanC extends APCommand{
                 $p = $sender->getServer()->getPlayerExact($name);
                 if($sender instanceof Player){
                     $adminName = $sender->getNameTag();
+                    $admin = $sender->getName();
                 }else{
-                    $adminName = $this->cfg->get("Console");;
+                    $adminName = $this->cfg->get("Console");
+                    $admin = $adminName;
                 }
                 $kick_message = str_replace("%sender%", $adminName, $this->cfg->get('TempBannedPlayerKickMessage'));
                 $kick_message = str_replace("%reason%", $reason, $kick_message);
                 $kick_message = str_replace("%duration%", date("d.m.Y H:i:s", $banTime), $kick_message);
                 
+                $bannedPlayer = $this->getPlugin()->getServer()->getNameBans()->getEntry($name);
+                if($bannedPlayer !== null){
+                    if($sender instanceof Player and $sender->hasPermission("adminprotect.unban.except.".mb_strtolower($bannedPlayer->getSource()))){
+                        $sender->sendMessage("§4[AdminProtect] §c".str_replace("%sender%", $bannedPlayer->getSource(), $this->cfg->get("CantEditBan")));
+                        return false;
+                    }
+                }
                 if($p instanceof Player){
                     if($p->hasPermission("adminprotect.tempban.protect" )){
                         if($sender instanceof Player and !$sender->hasPermission("adminprotect.tempban.protected")){
                             $sender->sendMessage("§4[AdminProtect]§c {$this->cfg->get("CantBanPlayer")}");
-                        }else{
-                            $sender->getServer()->getNameBans()->addBan($name, $reason, $dt, $adminName);
-                            $p->kick($kick_message);
-                            $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('TempBanBroadcast'));
-                            $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);
-                            $broadcast = str_replace("%reason%", $reason, $broadcast);
-                            $broadcast = str_replace("%duration%", date("d.m.Y H:i:s", $banTime), $broadcast);
-                            $sender->getServer()->broadcastMessage($broadcast);
+                            return false;
                         }
-                    }else{
-                        $sender->getServer()->getNameBans()->addBan($name, $reason, $dt, $adminName);
-                        $p->kick($kick_message);
-                        $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('TempBanBroadcast'));
-                        $broadcast = str_replace("%player%", $p->getNameTag(), $broadcast);
-                        $broadcast = str_replace("%reason%", $reason, $broadcast);
-                        $broadcast = str_replace("%duration%", date("d.m.Y H:i:s", $banTime), $broadcast);
-                        $sender->getServer()->broadcastMessage($broadcast);
                     }
-                    
+                    $p->kick($kick_message);
                 }else{
-                    if(!($sender instanceof Player) or $sender->hasPermission("adminprotect.tempban.use.offline")){
-                        $sender->getServer()->getNameBans()->addBan($name, $reason, $dt, $adminName);
-                        $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('TempBanBroadcast'));
-                        $broadcast = str_replace("%player%", $name, $broadcast);
-                        $broadcast = str_replace("%reason%", $reason, $broadcast);
-                        $broadcast = str_replace("%duration%", date("d.m.Y H:i:s", $banTime), $broadcast);
-                        $sender->getServer()->broadcastMessage($broadcast);
-                    }else{
+                    if($sender instanceof Player and !$sender->hasPermission("adminprotect.tempban.use.offline")){
                         $sender->sendMessage("§4[AdminProtect] §c{$this->cfg->get("CantBanOffline")}");
+                        return false;
                     }
-                    
                 }
-                if($this->getPlugin()->banInfoAPI != null){
-                    $api = $this->getPlugin()->banInfoAPI;
-                    $api->updateHistory($name);
-                }
+                $sender->getServer()->getNameBans()->addBan($name, $reason, $dt, $admin);
+                $broadcast = str_replace("%sender%", $adminName, $this->cfg->get('TempBanBroadcast'));
+                $broadcast = str_replace("%player%", $name, $broadcast);
+                $broadcast = str_replace("%reason%", $reason, $broadcast);
+                $broadcast = str_replace("%duration%", date("d.m.Y H:i:s", $banTime), $broadcast);
+                $sender->getServer()->broadcastMessage($broadcast);
             }
         }
         return true;
