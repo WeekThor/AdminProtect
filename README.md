@@ -1,9 +1,11 @@
-# AdminProtect
+# AdminProtect 2.0.0 Release
+
 AdminProtect is PocketMine-MP plugin that protects the administrator (players with special permissions) from being banned and kicked and prevent offline player ban.
 
 Now supports PMMP api 4.0.0+ only.
 
 ## Commands
+
 - /kick &lt;player&gt; [reason...] – kick specified player
 - /ban &lt;player&gt; [reason...] – ban specified player
 - /tempban &lt;player&gt; &lt;date or duration&gt; [reason...] – temporary ban specified player
@@ -11,8 +13,12 @@ Now supports PMMP api 4.0.0+ only.
 - /tbanip &lt;player IP adress&gt; &lt;date or duration&gt; [reason...] – temporary ban specified IP adress or specified player's IP adress
 - /unban &lt;player&gt; /pardon &lt;player&gt; – unban specified player
 - /unbanip &lt;IP&gt; /pardon-ip &lt;IP&gt; – unban specified IP adress
+- /baninfo &lt;player|address&gt; - displays information about player's or IP's active ban and shows can you unban him or not
+- 
+More information about commands can be found in the [wiki](https://github.com/WeekThor/AdminProtect/wiki/Commands).
   
 ## Permissions
+
 - adminprotect.* – all plugin permissions
   - adminprotect.kick.protect – Protection from /kick
   - adminprotect.kick.use – Allow to use /kick
@@ -32,9 +38,11 @@ Now supports PMMP api 4.0.0+ only.
   - adminprotect.banip.use.offline – Allow to ban offline players' IP
   - adminprotect.banip.use.protected – Allow to IP-ban players with protection
   - adminprotect.banip.use.permanent – Allow to use /banip (for permanentrly ban)
-  - adminprotect.unbanip.use – Allow to /unbanip
+  - adminprotect.unbanip.use – Allow to use /unbanip
+  - adminprotect.baninfo.use - Allow to use /baninfo
 
 ## Features
+
 - Protect admins from beign kicked, banned or ip-baned
 - Protect offline players from beign baned or ip-baned (we can't check if offline players have protection permissions)
 - - Players without ```adminprotect.banip.use.offline``` can't ban specified ip-adress, they can only ban specified online player nick
@@ -46,6 +54,7 @@ Now supports PMMP api 4.0.0+ only.
 - Simple ban duration setting 
   
 ## Temporary ban
+
 You can specify the ban until date in the format dd.mm.YYYY (for example: 03.12.2022) or you can specify the ban duration time in the special format decribed below.
 
 Ban duration format:
@@ -62,10 +71,10 @@ Ban duration is specifying without spaces: `/tban Steve 1h30m` will ban Steve fo
 Or you can specify only count of days (```/tban Steve 13``` will ban Steve for 13 days).
 
 ### Some bugs...
+
 If you specify ```5mo30m3mo``` player will be banned for 8 months and 30 minutes (```5mo``` + ```3mo``` gives 8 months). But ```5mo3mo30m``` doesn't work.
 
 ## Prevent unblocking
-in beta....
 
 If player has `adminprotect.unban.except.<admin>`, he will not be able to unban a player banned by &lt;admin&gt; (admin nick must be in lowercase). Also he will not be able to edit the ban issued by &lt;admin&gt;.This also applies to unblocking and editing an IP ban.
 
