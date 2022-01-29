@@ -36,14 +36,14 @@ class BanC extends APCommand{
             
             $bannedPlayer = $this->getPlugin()->getServer()->getNameBans()->getEntry($name);
             if($bannedPlayer !== null){
-                if($sender instanceof Player and $sender->hasPermission("adminprotect.unban.except.".mb_strtolower($bannedPlayer->getSource()))){
+                if(($sender instanceof Player and $sender->hasPermission("adminprotect.unban.except.".mb_strtolower($bannedPlayer->getSource()))) or ($sender->hasPermission("adminprotect.unban.except.*") && $bannedPlayer->getSource() != $sender->getName())){
                     $sender->sendMessage("§4[AdminProtect] §c".str_replace("%sender%", $bannedPlayer->getSource(), $this->cfg->get("CantEditBan")));
                     return false;
                 }
             }
             if($p instanceof Player){
                 if($p->hasPermission("adminprotect.ban.protect" )){
-                    if($sender instanceof Player and !$sender->hasPermission("adminprotect.ban.protected")){
+                    if($sender instanceof Player and !$sender->hasPermission("adminprotect.ban.use.protected")){
                         $sender->sendMessage("§4[AdminProtect]§c {$this->cfg->get("CantBanPlayer")}");
                         return false;
                     }

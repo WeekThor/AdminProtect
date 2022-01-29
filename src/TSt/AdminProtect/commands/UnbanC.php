@@ -33,6 +33,10 @@ class UnbanC extends APCommand{
                         $sender->sendMessage("§4[AdminProtect] §c".str_replace("%sender%", $bannedPlayer->getSource(), $this->cfg->get("CantUnbanBannedBy")));
                         return false;
                     }
+                    if($sender->hasPermission("adminprotect.unban.except.*") && $bannedPlayer->getSource() != $sender->getName()){
+                        $sender->sendMessage("§4[AdminProtect] §c".str_replace("%sender%", $bannedPlayer->getSource(), $this->cfg->get("CanUnbanOnlySelf")));
+                        return false;
+                    }
                 }
                 $broadcast = $this->cfg->get("UnbanBroadcast");
                 $broadcast = str_replace("%sender%", $admin, $broadcast);

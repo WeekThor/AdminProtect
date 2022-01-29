@@ -15,6 +15,7 @@ use TSt\AdminProtect\APIs\EventListener;
 use pocketmine\permission\PermissionManager;
 use pocketmine\permission\Permission;
 use TSt\AdminProtect\commands\TempBanIPC;
+use TSt\AdminProtect\commands\BanInfoC;
 
 class Loader extends PluginBase implements Listener{
     public function onLoad():void{
@@ -72,6 +73,7 @@ class Loader extends PluginBase implements Listener{
             new UnbanIPC($this),
             new TempBanC($this),
             new TempBanIPC($this),
+            new BanInfoC($this)
 		]);
 	}
 	

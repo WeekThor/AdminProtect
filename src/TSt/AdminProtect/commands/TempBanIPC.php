@@ -48,7 +48,7 @@ class TempBanIPC extends APCommand{
                 
                 $bannedPlayer = $this->getPlugin()->getServer()->getIPBans()->getEntry($name);
                 if($bannedPlayer !== null){
-                    if($sender instanceof Player and $sender->hasPermission("adminprotect.unban.except.".mb_strtolower($bannedPlayer->getSource()))){
+                    if(($sender instanceof Player and $sender->hasPermission("adminprotect.unban.except.".mb_strtolower($bannedPlayer->getSource()))) or ($sender->hasPermission("adminprotect.unban.except.*") && $bannedPlayer->getSource() != $sender->getName())){
                         $sender->sendMessage("§4[AdminProtect] §c".str_replace("%sender%", $bannedPlayer->getSource(), $this->cfg->get("CantEditBan")));
                         return false;
                     }
@@ -79,7 +79,8 @@ class TempBanIPC extends APCommand{
                     }
                 }
                 // if also block network, banned player will not see server status
-                // and "You are banned" message when trying to connect
+                // and will not see "You are banned" message when trying to connect
+                // But in the PockerMine ip-ban also blocks network
                 // I don't know, block adress or not...
                 //$sender->getServer()->getNetwork()->unblockAddress($p->getNetworkSession()->getIp());
                 //$sender->getServer()->getNetwork()->blockAddress($name, abs(date("U")-$dt->getTimestamp()));
