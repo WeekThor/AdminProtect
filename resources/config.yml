@@ -26,9 +26,9 @@ TempBannedPlayerKickMessage: "You was banned on this server until %duration%.\nR
 BannedPlayerKickMessage:     "You was banned on this server.\nReason: %reason% (%sender%§r)"                           # Message on banned player screen 
 
 # KICK MESSAGES
-DefaultKickReason: "You were kicked for breaking the rules"                                                            # Default kick reason (if not specified)
+DefaultKickReason: "You was kicked for breaking the rules"                                                             # Default kick reason (if not specified)
 KickBroadcast:     "§6Player §c%sender%§6 kicked player §c%player%§6. Reason: §c%reason%§6."                           # Boadcast message about kick (all players can see)
-KickedPlayerKickMessage: "You were kicked from the server. Reason: %reason% (%sender%§r)"                              # Message on kicked player screen
+KickedPlayerKickMessage: "You was kicked from the server. Reason: %reason% (%sender%§r)"                               # Message on kicked player screen
 
 # BANIP MESSAGES
 BanIPBroadcast:     "§6Player §c%sender%§6 banned IP adress §c%player%§6. Reason: §c%reason%§6."                       # Boadcast message about ip ban (all players can see)
