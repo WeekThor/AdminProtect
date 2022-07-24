@@ -1,4 +1,4 @@
-version: 0.1.3
+version: 0.1.4
 #IF YOU CHANGE THIS, THE CONFIG WILL REVERT TO ITS ORIGINAL VERSION
 
 
@@ -20,19 +20,22 @@ version: 0.1.3
 
 # BAN MESSAGES
 DefaultBanReason: "You got the great seal"                                                                             # Default ban reason (if not specified). Also used in ip-ban
-BanBroadcast:     "§6Player §c%sender%§6 banned player §c%player%§6. Reason: §c%reason%§6."                            # Boadcast message about ban (all players can see)
-TempBanBroadcast: "§6Player §c%sender%§6 banned player §c%player%§6 until §c%duration%§6. Reason: §c%reason%§6."       # Boadcast message about temporary ban (all players can see)
+BanBroadcast:     "§6Player §c%sender%§6 banned player §c%player%§6. Reason: §c%reason%§6."                            # Broadcast message about ban (all players can see)
+TempBanBroadcast: "§6Player §c%sender%§6 banned player §c%player%§6 until §c%duration%§6. Reason: §c%reason%§6."       # Broadcast message about temporary ban (all players can see)
 TempBannedPlayerKickMessage: "You was banned on this server until %duration%.\nReason: %reason% (%sender%§r)"          # Message on temporary banned player screen
 BannedPlayerKickMessage:     "You was banned on this server.\nReason: %reason% (%sender%§r)"                           # Message on banned player screen 
 
 # KICK MESSAGES
 DefaultKickReason: "You was kicked for breaking the rules"                                                             # Default kick reason (if not specified)
-KickBroadcast:     "§6Player §c%sender%§6 kicked player §c%player%§6. Reason: §c%reason%§6."                           # Boadcast message about kick (all players can see)
+KickBroadcast:     "§6Player §c%sender%§6 kicked player §c%player%§6. Reason: §c%reason%§6."                           # Broadcast message about kick (all players can see)
+KickAllBroadcast:  "§6Player §c%sender%§6 kicked §call players§6 from the server. Reason: §c%reason§6."                # Broadcast message about kick-all
 KickedPlayerKickMessage: "You was kicked from the server. Reason: %reason% (%sender%§r)"                               # Message on kicked player screen
+KickedAllPlayers: "All players are kicked from the server."
+KickedAllExcept:  "All players are kicked except %players% cause you can't kick him/them."
 
 # BANIP MESSAGES
-BanIPBroadcast:     "§6Player §c%sender%§6 banned IP adress §c%player%§6. Reason: §c%reason%§6."                       # Boadcast message about ip ban (all players can see)
-TempBanIPBroadcast: "§6Player §c%sender%§6 banned IP adress §c%player%§6 until §c%duration%§6. Reason: §c%reason%§6."  # Boadcast message about temporary ip ban (all players can see)
+BanIPBroadcast:     "§6Player §c%sender%§6 banned IP adress §c%player%§6. Reason: §c%reason%§6."                       # Broadcast message about ip ban (all players can see)
+TempBanIPBroadcast: "§6Player §c%sender%§6 banned IP adress §c%player%§6 until §c%duration%§6. Reason: §c%reason%§6."  # Broadcast message about temporary ip ban (all players can see)
 BannedIPKickMessage:     "Your IP was blocked on this server.\nReason: %reason% (%sender%§r)"                          # Message on banned player screen
 TempBannedIPKickMessage: "Your IP was blocked on this server until %duration%.\nReason: %reason% (%sender%§r)"         # Message on temporary banned player screen
 
@@ -49,16 +52,19 @@ BanInfo:
   - "§6 - You can unban:§r %can_unban%"
 
 # ERRORS MESSAGES
-DateFormatError:   "Ban duration error"
-PlayerNotFound:    "Player not found or offline" 
-PlayerNotBanned:   "This player is not banned."
-IPNotBanned:       "This IP is not banned."
-CantBanPlayer:     "You're not permitted to ban this player!"
-CantKickPlayer:    "You're not permitted to kick this player!"
-CantBanOffline:    "You're not permitted to ban player who is offline!"
-CantEditBan:       "You're not permitted to edit this ban!"  
-CantUnbanBannedBy: "You're not permitted to unban a player banned by %sender%!"
-CanUnbanOnlySelf:  "You can only unban players banned by yourself!"
+DateFormatError:    "Ban duration error"
+PlayerNotFound:     "Player not found or offline" 
+PlayerNotBanned:    "This player is not banned."
+IPNotBanned:        "This IP is not banned."
+CantBanPlayer:      "You're not permitted to ban this player!"
+CantKickPlayer:     "You're not permitted to kick this player!"
+CantBanOffline:     "You're not permitted to ban player who is offline!"
+CantEditBan:        "You're not permitted to edit this ban!"  
+CantUnbanBannedBy:  "You're not permitted to unban a player banned by %sender%!"
+CanUnbanOnlySelf:   "You can only unban players banned by yourself!"
+MultipleKickError:  "%player% not kicked: %error%"
+MultipleBanError:   "%player% not banned: %error%"
+MultipleUnbanError: "%player% not unbanned: %error%"
 IncorrectIP: "Specify IP adress"   # Message..:
 forBan:         "to ban"           # «[AdminProtect] Specify IP adress to ban»
 forUnban:       "to unban"         # «[AdminProtect] Specify IP adress to unban»

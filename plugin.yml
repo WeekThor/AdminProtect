@@ -17,6 +17,9 @@ permissions:
   adminprotect.ban.use.protected:
     description: "Access to ban players with protection"
     default: op
+  adminprotect.ban.use.multiple:
+    description: "Access to multiban"
+    default: op
   adminprotect.tempban.protect:
     description: "Protection from /tempban"
     default: op

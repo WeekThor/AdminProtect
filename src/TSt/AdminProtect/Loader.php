@@ -7,6 +7,7 @@ use TSt\AdminProtect\commands\UnbanC;
 use TSt\AdminProtect\commands\KickC;
 use TSt\AdminProtect\commands\UnbanIPC;
 use TSt\AdminProtect\commands\TempBanC;
+use TSt\AdminProtect\commands\MultiBanC;
 
 use DateTime;
 use pocketmine\event\Listener;
@@ -25,7 +26,7 @@ class Loader extends PluginBase implements Listener{
     public function onEnable():void{
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		$perms = new PermissionManager();
-		$perms->addPermission(new Permission("adminprotect.ban", "Parent of adminprotect.ban.*", ["adminprotect.ban.protect", "adminprotect.ban.use", "adminprotect.ban.use.offline", "adminprotect.ban.use.protected"]));
+		$perms->addPermission(new Permission("adminprotect.ban", "Parent of adminprotect.ban.*", ["adminprotect.ban.protect", "adminprotect.ban.use", "adminprotect.ban.use.offline", "adminprotect.ban.use.protected", "adminprotect.ban.use.multiple"]));
 		$perms->addPermission(new Permission("adminprotect.tempban", "Parent of adminprotect.tempban.*", ["adminprotect.tempban.protect", "adminprotect.tempban.use", "adminprotect.tempban.use.offline", "adminprotect.tempban.use.protected"]));
 		$perms->addPermission(new Permission("adminprotect.kick", "Parent of adminprotect.kick.*", ["adminprotect.kick.protect", "adminprotect.kick.use", "adminprotect.kick.use.protected"]));
 		$perms->addPermission(new Permission("adminprotect.banip", "Parent of adminprotect.banip.*", ["adminprotect.banip.protect", "adminprotect.banip.use", "adminprotect.banip.use.offline", "adminprotect.banip.use.protected", "adminprotect.banip.use.permanent"]));
@@ -39,7 +40,7 @@ class Loader extends PluginBase implements Listener{
             $this->saveDefaultConfig();
         }
         $this->saveResource("config.yml");
-        $config_version = "0.1.3";
+        $config_version = "0.1.4";
 		$cfg = $this->getConfig();
 		if(!$cfg->exists("version") || $cfg->get("version") !== $config_version){
             $this->getLogger()->notice("Different version of config found!");
@@ -73,7 +74,8 @@ class Loader extends PluginBase implements Listener{
             new UnbanIPC($this),
             new TempBanC($this),
             new TempBanIPC($this),
-            new BanInfoC($this)
+            new BanInfoC($this),
+            new MultiBanC($this)
 		]);
 	}
 	
