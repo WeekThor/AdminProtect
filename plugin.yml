@@ -1,7 +1,7 @@
 ﻿name: AdminProtect
 main: TSt\AdminProtect\Loader
 api: 4.0.0
-version: 2.0.0
+version: 2.0.1 beta
 authors: ["WeekThor"]
 description: "Protect players with special permissions from being banned and kicked and prevent offline ban"
 permissions:
@@ -40,6 +40,9 @@ permissions:
     default: op
   adminprotect.kick.use.protected:
     description: "Access to kick players with protection"
+    default: op
+  adminprotect.kick.use.multiple:
+    description: "Access to multikick"
     default: op
   adminprotect.unban.use:
     description: "Access to use /unban"

@@ -8,7 +8,7 @@ use pocketmine\player\Player;
 class MultiBanC extends APCommand{
     private $cfg;
     public function __construct(Loader $plugin){
-        parent::__construct($plugin, "ban", "Ban specified players", "/multiban <players> [reason...]", null, ["mban"]);
+        parent::__construct($plugin, "multiban", "Ban specified players", "/multiban <players> [reason...]", null, ["mban"]);
         $this->setPermission("adminprotect.ban.use.multiple");
     }
     public function execute(CommandSender $sender, $alias, array $args): bool{
@@ -17,7 +17,7 @@ class MultiBanC extends APCommand{
         }
         $this->cfg = $this->getPlugin()->getConfig();
         if(count($args) === 0){
-            $sender->sendMessage("§4[AdminProtect]§c /ban <{$this->cfg->get("Player")}> [{$this->cfg->get("Reason")}...]");
+            $sender->sendMessage("§4[AdminProtect]§c /mban <{$this->cfg->get("Player")}> [{$this->cfg->get("Reason")}...]");
         }else{
             $names = explode(',', array_shift($args));
             $r = trim(implode(" ", $args));
@@ -50,14 +50,14 @@ class MultiBanC extends APCommand{
                 if($p instanceof Player){
                     if($p->hasPermission("adminprotect.ban.protect" )){
                         if($sender instanceof Player and !$protected){
-                            $sender->sendMessage("§4[AdminProtect] §c".str_replace(["%error%", "%player%"], [str_replace("%sender%", $bannedPlayer->getSource(), $this->cfg->get("CantBanPlayer")),$name], $this->cfg->get("MultipleBanError")));
+                            $sender->sendMessage("§4[AdminProtect] §c".str_replace(["%error%", "%player%"], [$this->cfg->get("CantBanPlayer"),$name], $this->cfg->get("MultipleBanError")));
                             continue;
                         }
                     }
                     $p->kick($kick_message);
                 }else{
                     if($sender instanceof Player and !$offline){
-                        $sender->sendMessage("§4[AdminProtect] §c".str_replace(["%error%", "%player%"], [str_replace("%sender%", $bannedPlayer->getSource(), $this->cfg->get("CantBanOffline")),$name], $this->cfg->get("MultipleBanError")));
+                        $sender->sendMessage("§4[AdminProtect] §c".str_replace(["%error%", "%player%"], [$this->cfg->get("CantBanOffline"),$name], $this->cfg->get("MultipleBanError")));
                         continue;
                     }
                 }

@@ -17,6 +17,7 @@ use pocketmine\permission\PermissionManager;
 use pocketmine\permission\Permission;
 use TSt\AdminProtect\commands\TempBanIPC;
 use TSt\AdminProtect\commands\BanInfoC;
+use TSt\AdminProtect\commands\MultiKickC;
 
 class Loader extends PluginBase implements Listener{
     public function onLoad():void{
@@ -28,7 +29,7 @@ class Loader extends PluginBase implements Listener{
 		$perms = new PermissionManager();
 		$perms->addPermission(new Permission("adminprotect.ban", "Parent of adminprotect.ban.*", ["adminprotect.ban.protect", "adminprotect.ban.use", "adminprotect.ban.use.offline", "adminprotect.ban.use.protected", "adminprotect.ban.use.multiple"]));
 		$perms->addPermission(new Permission("adminprotect.tempban", "Parent of adminprotect.tempban.*", ["adminprotect.tempban.protect", "adminprotect.tempban.use", "adminprotect.tempban.use.offline", "adminprotect.tempban.use.protected"]));
-		$perms->addPermission(new Permission("adminprotect.kick", "Parent of adminprotect.kick.*", ["adminprotect.kick.protect", "adminprotect.kick.use", "adminprotect.kick.use.protected"]));
+		$perms->addPermission(new Permission("adminprotect.kick", "Parent of adminprotect.kick.*", ["adminprotect.kick.protect", "adminprotect.kick.use", "adminprotect.kick.use.protected", "adminprotect.kick.use.multiple"]));
 		$perms->addPermission(new Permission("adminprotect.banip", "Parent of adminprotect.banip.*", ["adminprotect.banip.protect", "adminprotect.banip.use", "adminprotect.banip.use.offline", "adminprotect.banip.use.protected", "adminprotect.banip.use.permanent"]));
 		$perms->addPermission(new Permission("adminprotect.*", "All plugin permissions", ["adminprotect.ban.protect", "adminprotect.ban.use", "adminprotect.ban.use.offline", "adminprotect.ban.use.protected", "adminprotect.tempban.protect", "adminprotect.tempban.use", "adminprotect.tempban.use.offline", "adminprotect.tempban.use.protected", "adminprotect.kick.protect", "adminprotect.kick.use", "adminprotect.kick.use.protected", "adminprotect.unban.use", "adminprotect.unbanip.use", "adminprotect.banip.protect", "adminprotect.banip.use", "adminprotect.banip.use.protected", "adminprotect.banip.use.permanent"]));
     }
@@ -75,7 +76,8 @@ class Loader extends PluginBase implements Listener{
             new TempBanC($this),
             new TempBanIPC($this),
             new BanInfoC($this),
-            new MultiBanC($this)
+            new MultiBanC($this),
+            new MultiKickC($this)
 		]);
 	}
 	
