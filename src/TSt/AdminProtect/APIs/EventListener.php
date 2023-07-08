@@ -37,7 +37,7 @@ class EventListener implements Listener{
                 $msg = str_replace('%sender%', $banEntry->getSource(), $msg);
                 $msg = str_replace('%reason%', $banEntry->getReason(), $msg);
             }
-            $e->setKickFlag(PlayerPreLoginEvent::KICK_FLAG_BANNED, $msg);
+            $e->setKickFlag(PlayerPreLoginEvent::KICK_FLAG_BANNED, str_replace(["\n","\r"], "", $msg), $msg);
         }
     }
 }
