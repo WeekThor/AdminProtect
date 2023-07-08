@@ -1,6 +1,6 @@
 ﻿name: AdminProtect
 main: TSt\AdminProtect\Loader
-api: 4.0.0
+api: 5.0.0
 version: 2.0.1 beta
 authors: ["WeekThor"]
 description: "Protect players with special permissions from being banned and kicked and prevent offline ban"

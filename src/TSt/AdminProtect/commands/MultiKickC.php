@@ -25,10 +25,10 @@ class MultiKickC extends APCommand{
             
             if($sender instanceof Player){
                 $adminName = $sender->getNameTag();
-                $protected = $sender->hasPermission("adminprotect.kick.use.protected");
+                $superadmin = $sender->hasPermission("adminprotect.kick.use.protected");
             }else{
                 $adminName = $this->cfg->get("Console");
-                $protected = true;
+                $superadmin = true;
             }
             $kick_message = str_replace("%sender%", $adminName, $this->cfg->get('KickedPlayerKickMessage'));
             $kick_message = str_replace("%reason%", $reason, $kick_message);
@@ -38,7 +38,7 @@ class MultiKickC extends APCommand{
                 $p = $sender->getServer()->getPlayerExact($name);
                 if($p instanceof Player){
                     if($p->hasPermission("adminprotect.kick.protect" )){
-                        if($sender instanceof Player and !$protected){
+                        if($sender instanceof Player and !$superadmin){
                             $sender->sendMessage("§4[AdminProtect] §c".str_replace(["%error%", "%player%"], [$this->cfg->get("CantKickPlayer"),$name], $this->cfg->get("MultipleKickError")));
                             continue;
                         }

@@ -14,7 +14,7 @@ class EventListener implements Listener{
     /**
      * Display ban duration and ban reason for banned player when he tries to join
      * 
-     * @handleCancelled
+     * 
      * @priority HIGHEST
      */
     public function onPreLogin(PlayerPreLoginEvent $e):void{
@@ -37,7 +37,7 @@ class EventListener implements Listener{
                 $msg = str_replace('%sender%', $banEntry->getSource(), $msg);
                 $msg = str_replace('%reason%', $banEntry->getReason(), $msg);
             }
-            $e->setKickReason(PlayerPreLoginEvent::KICK_REASON_BANNED, $msg);
+            $e->setKickFlag(PlayerPreLoginEvent::KICK_FLAG_BANNED, $msg);
         }
     }
 }

@@ -27,12 +27,12 @@ class MultiBanC extends APCommand{
                 $adminName = $sender->getNameTag();
                 $admin = $sender->getName();
                 $offline = $sender->hasPermission("adminprotect.ban.use.offline");
-                $protected = $sender->hasPermission("adminprotect.ban.use.protected");
+                $superadmin = $sender->hasPermission("adminprotect.ban.use.protected");
             }else{
                 $adminName = $this->cfg->get("Console");
                 $admin = $adminName;
                 $offline = true;
-                $protected = true;
+                $superadmin = true;
             }
             $kick_message = str_replace("%sender%", $adminName, $this->cfg->get('BannedPlayerKickMessage'));
             $kick_message = str_replace("%reason%", $reason, $kick_message);
@@ -49,7 +49,7 @@ class MultiBanC extends APCommand{
                 }
                 if($p instanceof Player){
                     if($p->hasPermission("adminprotect.ban.protect" )){
-                        if($sender instanceof Player and !$protected){
+                        if($sender instanceof Player and !$superadmin){
                             $sender->sendMessage("§4[AdminProtect] §c".str_replace(["%error%", "%player%"], [$this->cfg->get("CantBanPlayer"),$name], $this->cfg->get("MultipleBanError")));
                             continue;
                         }
