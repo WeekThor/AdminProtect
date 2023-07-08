@@ -1,20 +1,22 @@
-# AdminProtect 2.0.0 Release
+# AdminProtect 3.0.0 Beta 1
 
 AdminProtect is PocketMine-MP plugin that protects the administrator (players with special permissions) from being banned and kicked and prevent offline player ban.
 
-Now supports PMMP api 4.0.0+ only.
+Now supports PMMP api 5.0.0+ only.
 
 ## Commands
 
 - /kick &lt;player&gt; [reason...] – kick specified player
+- /multikick &lt;players&gt; [reason...] – kick specified players seperated by commas
 - /ban &lt;player&gt; [reason...] – ban specified player
+- /multiban &lt;players&gt; [reason...] – ban specified players players seperated by commas
 - /tempban &lt;player&gt; &lt;date or duration&gt; [reason...] – temporary ban specified player
 - /banip &lt;player or IP adress&gt; [reason...] – ban specified IP adress or specified player's IP adress
 - /tbanip &lt;player IP adress&gt; &lt;date or duration&gt; [reason...] – temporary ban specified IP adress or specified player's IP adress
 - /unban &lt;player&gt; /pardon &lt;player&gt; – unban specified player
 - /unbanip &lt;IP&gt; /pardon-ip &lt;IP&gt; – unban specified IP adress
 - /baninfo &lt;player|address&gt; - displays information about player's or IP's active ban and shows can you unban him or not
-- 
+  
 More information about commands can be found in the [wiki](https://github.com/WeekThor/AdminProtect/wiki/Commands).
   
 ## Permissions
@@ -22,9 +24,11 @@ More information about commands can be found in the [wiki](https://github.com/We
 - adminprotect.* – all plugin permissions
   - adminprotect.kick.protect – Protection from /kick
   - adminprotect.kick.use – Allow to use /kick
+  - adminprotect.kick.use.multiple - Allow to use /multikick
   - adminprotect.kick.use.protected – Allow to kick players with protection
   - adminprotect.ban.protect – Protection from /ban
   - adminprotect.ban.use – Allow to use /ban
+  - adminprotect.ban.use.multiple - Allow to use /multiban
   - adminprotect.ban.use.offline – Allow to ban offline players
   - adminprotect.ban.use.protected – Allow to ban players with protection
   - adminprotect.tempban.protect – Protection from /tempban
@@ -44,12 +48,13 @@ More information about commands can be found in the [wiki](https://github.com/We
 ## Features
 
 - Protect admins from beign kicked, banned or ip-baned
-- Protect offline players from beign baned or ip-baned (we can't check if offline players have protection permissions)
+- Protect offline players from beign baned or ip-baned (we can't check if offline players has protection permissions)
 - - Players without ```adminprotect.banip.use.offline``` can't ban specified ip-adress, they can only ban specified online player nick
 - Special permissions for operators to ban and kick players with protection
 - Prevent unblocking players that banned by specified admins
 - Prevent editing bans issued by specified admins
 - Temporary ban and ip-ban
+- Multiple ban and multiple kick using one command — just specify players seperated by commas
 - Broadcasting kick and ban messages for all players
 - Simple ban duration setting 
   
@@ -69,10 +74,6 @@ Ban duration format:
 Ban duration is specifying without spaces: `/tban Steve 1h30m` will ban Steve for 1 hour 30 minutes; `/tban Steve 1w3d` will ban Steve for 1 week 3 days, etc
 
 Or you can specify only count of days (```/tban Steve 13``` will ban Steve for 13 days).
-
-### Some bugs...
-
-If you specify ```5mo30m3mo``` player will be banned for 8 months and 30 minutes (```5mo``` + ```3mo``` gives 8 months). But ```5mo3mo30m``` doesn't work.
 
 ## Prevent unblocking
 
